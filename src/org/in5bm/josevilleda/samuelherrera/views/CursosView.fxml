@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -7,7 +8,6 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -127,19 +127,34 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <Label layoutX="7.0" layoutY="679.0" text="Monte Carlo 2022 ®" textFill="WHITE">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </left>
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
+                  <ImageView fitHeight="729.0" fitWidth="1252.0" layoutX="-1.0" layoutY="-26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/fondo%20figuras.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="271.0" fitWidth="472.0" layoutX="231.0" layoutY="-76.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/Logo%20Horizontal.png" />
+                     </image>
+                  </ImageView>
                   <TableView fx:id="tblCursos" layoutX="9.0" layoutY="314.0" onKeyReleased="#seleccionarElemento" onMouseClicked="#seleccionarElemento" prefHeight="372.0" prefWidth="933.0">
                     <columns>
                         <TableColumn fx:id="colId" prefWidth="33.0" text="ID" />
                       <TableColumn fx:id="colNombreCurso" prefWidth="159.0" text="Nombre Curso" />
                       <TableColumn fx:id="colCiclo" prefWidth="56.0" text="Ciclo" />
-                        <TableColumn fx:id="colCupoMinimo" prefWidth="94.0" text="Cupo Maximo" />
-                        <TableColumn fx:id="colCupoMaximo" prefWidth="91.0" text="Cupo Minimo" />
+                        <TableColumn fx:id="colCupoMaximo" prefWidth="94.0" text="Cupo Maximo" />
+                        <TableColumn fx:id="colCupoMinimo" prefWidth="91.0" text="Cupo Minimo" />
                         <TableColumn fx:id="colCodigoTecnico" prefWidth="159.0" text="ID Carrera Tecnica" />
                         <TableColumn fx:id="colHorario" prefWidth="95.0" text="ID Horario" />
                         <TableColumn fx:id="colInstructor" prefWidth="119.0" text="ID Instructor" />
@@ -151,7 +166,7 @@
                         <Image url="@../resources/images/flecha-izquierda.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="11.0" layoutY="74.0" prefHeight="184.0" prefWidth="929.0">
+                  <GridPane layoutX="11.0" layoutY="107.0" prefHeight="184.0" prefWidth="929.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
@@ -192,10 +207,8 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtId" disable="true" GridPane.columnIndex="1" />
                         <ComboBox fx:id="cmbCarreraTecnica" disable="true" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <ComboBox fx:id="cmbHorario" disable="true" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtNombreCurso" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Ciclo" GridPane.rowIndex="2">
                            <font>
                               <Font size="16.0" />
@@ -226,6 +239,8 @@
                         </Label>
                         <ComboBox fx:id="cmbInstructor" disable="true" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                         <ComboBox fx:id="cmbSalon" disable="true" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                        <JFXTextField fx:id="txtId" disable="true" editable="false" GridPane.columnIndex="1" />
+                        <JFXTextField fx:id="txtNombreCurso" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>

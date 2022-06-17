@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,11 +20,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" stylesheets="@../resources/css/EstiloModulos.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.in5bm.josevilleda.samuelherrera.controllers.AlumnosController">
    <children>
-      <ImageView fitHeight="317.0" fitWidth="596.0" layoutX="447.0" layoutY="-53.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/images/Logo%20colegio.png" />
-         </image>
-      </ImageView>
       <BorderPane prefHeight="700.0" prefWidth="1200.0">
          <left>
             <Pane id="panel-navegacion" prefHeight="691.0" prefWidth="250.0" BorderPane.alignment="CENTER">
@@ -130,12 +125,32 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <Label layoutX="8.0" layoutY="679.0" text="Monte Carlo 2022 ®" textFill="WHITE">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </left>
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
+                  <ImageView fitHeight="762.0" fitWidth="1227.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/fondo%20figuras.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="350.0" fitWidth="687.0" layoutX="164.0" layoutY="-68.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/Logo%20Horizontal.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="842.0" layoutY="70.0" onMouseClicked="#clicMenuPrincipal" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/flecha-izquierda.png" />
+                     </image>
+                  </ImageView>
                   <GridPane layoutX="28.0" layoutY="173.0" prefHeight="488.0" prefWidth="181.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -170,11 +185,6 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCarne" disable="true" editable="false" prefHeight="25.0" prefWidth="161.0" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtNombre1" disable="true" editable="false" GridPane.rowIndex="3" />
-                        <TextField fx:id="txtApellido2" disable="true" editable="false" prefWidth="181.0" GridPane.rowIndex="11" />
-                        <TextField fx:id="txtNombre2" disable="true" editable="false" GridPane.rowIndex="5" />
-                        <TextField fx:id="txtApellido1" disable="true" editable="false" GridPane.rowIndex="9" />
                         <Label text="Primer Apellido: " GridPane.rowIndex="8">
                            <font>
                               <Font size="15.0" />
@@ -190,7 +200,12 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtNombre3" disable="true" editable="false" prefHeight="25.0" prefWidth="161.0" GridPane.rowIndex="7" />
+                        <JFXTextField fx:id="txtCarne" disable="true" editable="false" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="txtNombre1" disable="true" editable="false" GridPane.rowIndex="3" />
+                        <JFXTextField fx:id="txtNombre2" disable="true" editable="false" GridPane.rowIndex="5" />
+                        <JFXTextField fx:id="txtNombre3" disable="true" editable="false" GridPane.rowIndex="7" />
+                        <JFXTextField fx:id="txtApellido1" disable="true" editable="false" GridPane.rowIndex="9" />
+                        <JFXTextField fx:id="txtApellido2" disable="true" editable="false" GridPane.rowIndex="11" />
                      </children>
                   </GridPane>
                   <TableView fx:id="tblAlumnos" layoutX="234.0" layoutY="177.0" onKeyReleased="#seleccionarElemento" onMouseClicked="#seleccionarElemento" prefHeight="482.0" prefWidth="690.0">
@@ -203,11 +218,6 @@
                         <TableColumn fx:id="colApellido2" prefWidth="115.0" text="Apellido 2" />
                     </columns>
                   </TableView>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="842.0" layoutY="70.0" onMouseClicked="#clicMenuPrincipal" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/images/flecha-izquierda.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Pane>
          </center>

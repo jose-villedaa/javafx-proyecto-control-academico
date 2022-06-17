@@ -65,9 +65,6 @@ public class SalonesController implements Initializable {
     private TextField txtDescripcionSalon;
 
     @FXML
-    private TextField txtCapacidadMaxima;
-
-    @FXML
     private TextField txtEdificio;
 
     @FXML
@@ -102,6 +99,9 @@ public class SalonesController implements Initializable {
 
     @FXML
     private Spinner<Integer> spnNivel;
+    
+    @FXML
+    private Spinner<Integer> spnCapacidadMaxima;
 
     private final String PAQUETE_IMAGES = "org/in5bm/josevilleda/samuelherrera/resources/images/";
 
@@ -109,10 +109,16 @@ public class SalonesController implements Initializable {
 
     private SpinnerValueFactory<Integer> valueFactoryNivel;
 
+    private SpinnerValueFactory<Integer> valueFactoryCapacidad;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         valueFactoryNivel = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 4, 0);
         spnNivel.setValueFactory(valueFactoryNivel);
+
+        valueFactoryCapacidad = new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 50, 0);
+        spnCapacidadMaxima.setValueFactory(valueFactoryCapacidad);
+
         cargarDatos();
     }
 
@@ -139,7 +145,7 @@ public class SalonesController implements Initializable {
 
             txtDescripcionSalon.setText(((Salones) tblSalones.getSelectionModel().getSelectedItem()).getDescripcion());
 
-            txtCapacidadMaxima.setText(String.valueOf(((Salones) tblSalones.getSelectionModel().getSelectedItem()).getCapacidadMaxima()));
+            spnCapacidadMaxima.getValueFactory().setValue(((Salones) tblSalones.getSelectionModel().getSelectedItem()).getCapacidadMaxima());
 
             txtEdificio.setText(((Salones) tblSalones.getSelectionModel().getSelectedItem()).getEdificio());
 
@@ -154,7 +160,7 @@ public class SalonesController implements Initializable {
 
         salon.setCodigoSalon(txtCodigoSalon.getText());
         salon.setDescripcion(txtDescripcionSalon.getText());
-        salon.setCapacidadMaxima(Integer.parseInt(txtCapacidadMaxima.getText()));
+        salon.setCapacidadMaxima((int) spnCapacidadMaxima.getValue());
         salon.setEdificio(txtEdificio.getText());
         salon.setNivel((int) spnNivel.getValue());
 
@@ -238,7 +244,7 @@ public class SalonesController implements Initializable {
             stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
             conf.show();
 
-        } else if (txtCapacidadMaxima.getText().isEmpty()) {
+        } else if (spnCapacidadMaxima.getValue().equals(0)) {
 
             Alert conf = new Alert(Alert.AlertType.WARNING);
             conf.setTitle("Control Academico Monte Carlo");
@@ -271,7 +277,7 @@ public class SalonesController implements Initializable {
 
             salon.setCodigoSalon(txtCodigoSalon.getText());
             salon.setDescripcion(txtDescripcionSalon.getText());
-            salon.setCapacidadMaxima(Integer.parseInt(txtCapacidadMaxima.getText()));
+            salon.setCapacidadMaxima((int) spnCapacidadMaxima.getValue());
             salon.setEdificio(txtEdificio.getText());
             salon.setNivel((int) spnNivel.getValue());
 
@@ -371,13 +377,13 @@ public class SalonesController implements Initializable {
 
         txtCodigoSalon.setEditable(false);
         txtDescripcionSalon.setEditable(false);
-        txtCapacidadMaxima.setEditable(false);
+        spnCapacidadMaxima.setEditable(false);
         txtEdificio.setEditable(false);
         spnNivel.setEditable(false);
 
         txtCodigoSalon.setDisable(true);
         txtDescripcionSalon.setDisable(true);
-        txtCapacidadMaxima.setDisable(true);
+        spnCapacidadMaxima.setDisable(true);
         txtEdificio.setDisable(true);
         spnNivel.setDisable(true);
     }
@@ -386,13 +392,13 @@ public class SalonesController implements Initializable {
 
         txtCodigoSalon.setEditable(false);
         txtDescripcionSalon.setEditable(true);
-        txtCapacidadMaxima.setEditable(true);
+        spnCapacidadMaxima.setEditable(true);
         txtEdificio.setEditable(true);
         spnNivel.setEditable(true);
 
         txtCodigoSalon.setDisable(true);
         txtDescripcionSalon.setDisable(false);
-        txtCapacidadMaxima.setDisable(false);
+        spnCapacidadMaxima.setDisable(false);
         txtEdificio.setDisable(false);
         spnNivel.setDisable(false);
 
@@ -401,9 +407,9 @@ public class SalonesController implements Initializable {
     private void limpiarCampos() {
         txtCodigoSalon.setText("");
         txtDescripcionSalon.setText("");
-        txtCapacidadMaxima.setText("");
+        spnCapacidadMaxima.getValueFactory().setValue(0);
         txtEdificio.setText("");
-        spnNivel.getValueFactory().setValue(0);
+        spnNivel.getValueFactory().setValue(10);
 
     }
 
@@ -520,12 +526,11 @@ public class SalonesController implements Initializable {
                             Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
                             stageAlert.getIcons().add(icon);
                             alert.show();
-                           
-                            
+
                         } else if (result.get().equals(ButtonType.CANCEL)) {
 
                             tblSalones.getSelectionModel().clearSelection();
-                            
+
                             limpiarCampos();
                             deshabilitarCampos();
                         }

@@ -1,5 +1,6 @@
 package org.in5bm.josevilleda.samuelherrera.controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -38,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
+import javafx.geometry.Point2D;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import org.in5bm.josevilleda.samuelherrera.db.Conexion;
@@ -93,9 +95,9 @@ public class CursosController implements Initializable {
     private TableColumn<Cursos, String> colSalon;
 
     @FXML
-    private TextField txtId;
+    private JFXTextField txtId;
     @FXML
-    private TextField txtNombreCurso;
+    private JFXTextField txtNombreCurso;
 
     @FXML
     private Spinner<Integer> spnCiclo;
@@ -154,7 +156,7 @@ public class CursosController implements Initializable {
         cargarDatos();
 
     }
-    
+
     @FXML
     private void seleccionarElemento() {
         if (existeElementoSeleccionado()) {
@@ -162,6 +164,12 @@ public class CursosController implements Initializable {
             txtId.setText(String.valueOf(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getId()));
 
             txtNombreCurso.setText(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getNombreCurso());
+            
+            spnCiclo.getValueFactory().setValue(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCiclo());
+            
+            spnCupoMaximo.getValueFactory().setValue(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCupoMaximo());
+            
+            spnCupoMinimo.getValueFactory().setValue(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCupoMinimo());
 
             cmbCarreraTecnica.getSelectionModel().select(buscarCarrerasTecnicas(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCarreraTecnicaId()));
 
@@ -173,6 +181,10 @@ public class CursosController implements Initializable {
 
         }
 
+    }
+
+    public boolean campoCompletado() {
+        return (cmbCarreraTecnica.getSelectionModel() == null || cmbHorario.getSelectionModel() == null || cmbInstructor.getSelectionModel() == null || cmbSalon.getSelectionModel() == null);
     }
 
     private void deshabilitarCampos() {
@@ -242,15 +254,15 @@ public class CursosController implements Initializable {
 
             while (rs.next()) {
                 Cursos curso = new Cursos();
-                curso.setId(rs.getInt("id"));
-                curso.setNombreCurso(rs.getString("nombre_curso"));
-                curso.setCiclo(rs.getInt("ciclo"));
-                curso.setCupoMaximo(rs.getInt("cupo_maximo"));
-                curso.setCupoMinimo(rs.getInt("cupo_minimo"));
-                curso.setCarreraTecnicaId(rs.getString("carrera_tecnica_id"));
-                curso.setHorarioId(rs.getInt("horario_id"));
-                curso.setIntructorId(rs.getInt("instructor_id"));
-                curso.setSalonId(rs.getString("salon_id"));
+                curso.setId(rs.getInt(1));
+                curso.setNombreCurso(rs.getString(2));
+                curso.setCiclo(rs.getInt(3));
+                curso.setCupoMaximo(rs.getInt(4));
+                curso.setCupoMinimo(rs.getInt(5));
+                curso.setCarreraTecnicaId(rs.getString(6));
+                curso.setHorarioId(rs.getInt(7));
+                curso.setIntructorId(rs.getInt(8));
+                curso.setSalonId(rs.getString(9));
 
                 System.out.println(curso.toString());
 
@@ -500,59 +512,134 @@ public class CursosController implements Initializable {
 
         Cursos curso = new Cursos();
 
-        curso.setNombreCurso(txtNombreCurso.getText());
-        curso.setCiclo(spnCiclo.getValue());
-        curso.setCupoMaximo(spnCupoMaximo.getValue());
-        curso.setCupoMinimo(spnCupoMinimo.getValue());
+        if (txtNombreCurso.getText().isEmpty()) {
 
-        curso.setCarreraTecnicaId(((CarrerasTecnicas) cmbCarreraTecnica
-                .getSelectionModel().getSelectedItem()).getCodigoTecnico());
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Ingrese el Nombre del Curso! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
 
-        curso.setHorarioId(((Horarios) cmbHorario.getSelectionModel()
-                .getSelectedItem()).getId());
+        } else if (spnCiclo.getValue() == 0) {
 
-        curso.setIntructorId(((Instructores) cmbInstructor.getSelectionModel()
-                .getSelectedItem()).getId());
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Ingrese el Apellido del Instructor! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
+            
+        } else if (spnCupoMaximo.getValue() == 0) {
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Ingrese el Apellido del Instructor! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
+            
+        } else if (spnCupoMinimo.getValue() == 0) {
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Ingrese el Apellido del Instructor! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
 
-        curso.setSalonId(((Salones) cmbSalon.getSelectionModel()
-                .getSelectedItem()).getCodigoSalon());
+        } else if (cmbCarreraTecnica.getValue() == null) {
 
-        PreparedStatement pstmt = null;
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione la Carrera Tecnica Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
 
-        try {
-            pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_cursos_create(?, ?, ?, ?, ?, ?, ?, ?)}");
+        } else if (cmbHorario.getValue() == null) {
 
-            pstmt.setString(1, curso.getNombreCurso());
-            pstmt.setInt(2, curso.getCiclo());
-            pstmt.setInt(3, curso.getCupoMaximo());
-            pstmt.setInt(4, curso.getCupoMinimo());
-            pstmt.setString(5, curso.getCarreraTecnicaId());
-            pstmt.setInt(6, curso.getHorarioId());
-            pstmt.setInt(7, curso.getInstructorId());
-            pstmt.setString(8, curso.getSalonId());
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione El horario Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
 
-            System.out.println(pstmt.toString());
+        } else if (cmbInstructor.getValue() == null) {
 
-            pstmt.execute();
-            listaObservableCursos.add(curso);
-            return true;
-        } catch (SQLException e) {
-            System.err.println("\nSe produjo un error al intentar insertar "
-                    + "el siguiente registro: " + curso.toString());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione el Instructor Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
+
+        } else if (cmbSalon.getValue() == null) {
+
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione el Salon Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
+        } else {
+
+            curso.setNombreCurso(txtNombreCurso.getText());
+            curso.setCiclo(spnCiclo.getValue());
+            curso.setCupoMaximo(spnCupoMaximo.getValue());
+            curso.setCupoMinimo(spnCupoMinimo.getValue());
+
+            curso.setCarreraTecnicaId(((CarrerasTecnicas) cmbCarreraTecnica.getSelectionModel().getSelectedItem()).getCodigoTecnico());
+
+            curso.setHorarioId(((Horarios) cmbHorario.getSelectionModel().getSelectedItem()).getId());
+
+            curso.setIntructorId(((Instructores) cmbInstructor.getSelectionModel().getSelectedItem()).getId());
+
+            curso.setSalonId(((Salones) cmbSalon.getSelectionModel().getSelectedItem()).getCodigoSalon());
+
+            PreparedStatement pstmt = null;
+
             try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
+                pstmt = Conexion.getInstance().getConexion()
+                        .prepareCall("{CALL sp_cursos_create(?, ?, ?, ?, ?, ?, ?, ?)}");
+
+                pstmt.setString(1, curso.getNombreCurso());
+                pstmt.setInt(2, curso.getCiclo());
+                pstmt.setInt(3, curso.getCupoMaximo());
+                pstmt.setInt(4, curso.getCupoMinimo());
+                pstmt.setString(5, curso.getCarreraTecnicaId());
+                pstmt.setInt(6, curso.getHorarioId());
+                pstmt.setInt(7, curso.getInstructorId());
+                pstmt.setString(8, curso.getSalonId());
+
+                System.out.println(pstmt.toString());
+
+                pstmt.execute();
+                listaObservableCursos.add(curso);
+                return true;
+            } catch (SQLException e) {
+                System.err.println("\nSe produjo un error al intentar insertar "
+                        + "el siguiente registro: " + curso.toString());
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (pstmt != null) {
+                        pstmt.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-
         return false;
     }
 
@@ -567,17 +654,13 @@ public class CursosController implements Initializable {
         curso.setCupoMaximo(spnCupoMaximo.getValue());
         curso.setCupoMinimo(spnCupoMinimo.getValue());
 
-        curso.setCarreraTecnicaId(((CarrerasTecnicas) cmbCarreraTecnica
-                .getSelectionModel().getSelectedItem()).getCodigoTecnico());
+        curso.setCarreraTecnicaId(((CarrerasTecnicas) cmbCarreraTecnica.getSelectionModel().getSelectedItem()).getCodigoTecnico());
 
-        curso.setHorarioId(((Horarios) cmbHorario.getSelectionModel()
-                .getSelectedItem()).getId());
+        curso.setHorarioId(((Horarios) cmbHorario.getSelectionModel().getSelectedItem()).getId());
 
-        curso.setIntructorId(((Instructores) cmbInstructor.getSelectionModel()
-                .getSelectedItem()).getId());
+        curso.setIntructorId(((Instructores) cmbInstructor.getSelectionModel().getSelectedItem()).getId());
 
-        curso.setSalonId(((Salones) cmbSalon.getSelectionModel()
-                .getSelectedItem()).getCodigoSalon());
+        curso.setSalonId(((Salones) cmbSalon.getSelectionModel().getSelectedItem()).getCodigoSalon());
 
         PreparedStatement pstmt = null;
 
@@ -689,26 +772,40 @@ public class CursosController implements Initializable {
 
                 break;
             case GUARDAR:
-                if (agregarCursos()) {
-                    limpiarCampos();
-                    deshabilitarCampos();
-                    cargarDatos();
 
-                    tblCursos.setDisable(false);
+                if (campoCompletado()) {
 
-                    btnNuevo.setText("Nuevo");
-                    imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
+                    Alert conf = new Alert(Alert.AlertType.WARNING);
+                    conf.setTitle("Control Academico Monte Carlo");
+                    conf.setContentText(" Complete los campos Obligatorios antes de continuar!");
+                    conf.setHeaderText(null);
+                    Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+                    stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+                    conf.show();
 
-                    btnModificar.setText("Modificar");
-                    imgModificar.setImage(new Image(PAQUETE_IMAGES + "modificar.png"));
+                } else {
 
-                    btnEliminar.setDisable(false);
-                    btnEliminar.setVisible(true);
+                    if (agregarCursos()) {
+                        limpiarCampos();
+                        deshabilitarCampos();
+                        cargarDatos();
 
-                    btnReporte.setDisable(false);
-                    btnReporte.setVisible(true);
+                        tblCursos.setDisable(false);
 
-                    operacion = Operacion.NINGUNO;
+                        btnNuevo.setText("Nuevo");
+                        imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
+
+                        btnModificar.setText("Modificar");
+                        imgModificar.setImage(new Image(PAQUETE_IMAGES + "modificar.png"));
+
+                        btnEliminar.setDisable(false);
+                        btnEliminar.setVisible(true);
+
+                        btnReporte.setDisable(false);
+                        btnReporte.setVisible(true);
+
+                        operacion = Operacion.NINGUNO;
+                    }
                 }
                 break;
         }
@@ -1137,7 +1234,6 @@ public class CursosController implements Initializable {
 
         return salon;
     }
-
 
     public Principal getEscenarioPrincipal() {
         return escenarioPrincipal;

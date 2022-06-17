@@ -1,5 +1,7 @@
 package org.in5bm.josevilleda.samuelherrera.controllers;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import java.sql.CallableStatement;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -72,6 +74,9 @@ public class InstructoresController implements Initializable {
     private ImageView imgReporte;
 
     @FXML
+    private JFXDatePicker dpkFecha;
+
+    @FXML
     private TableView<?> tblInstructores;
 
     @FXML
@@ -105,34 +110,31 @@ public class InstructoresController implements Initializable {
     private TableColumn colFecha;
 
     @FXML
-    private TextField txtId;
+    private JFXTextField txtId;
 
     @FXML
-    private TextField txtNombre1;
+    private JFXTextField txtNombre1;
 
     @FXML
-    private TextField txtNombre2;
+    private JFXTextField txtNombre2;
 
     @FXML
-    private TextField txtNombre3;
+    private JFXTextField txtNombre3;
 
     @FXML
-    private TextField txtApellido1;
+    private JFXTextField txtApellido1;
 
     @FXML
-    private TextField txtApellido2;
+    private JFXTextField txtApellido2;
 
     @FXML
-    private TextField txtDireccion;
+    private JFXTextField txtDireccion;
 
     @FXML
-    private TextField txtEmail;
+    private JFXTextField txtEmail;
 
     @FXML
-    private TextField txtTelefono;
-
-    @FXML
-    private DatePicker dpkFecha;
+    private JFXTextField txtTelefono;
 
     private final String PAQUETE_IMAGES = "org/in5bm/josevilleda/samuelherrera/resources/images/";
 
@@ -186,7 +188,7 @@ public class InstructoresController implements Initializable {
             txtEmail.setText(((Instructores) tblInstructores.getSelectionModel().getSelectedItem()).getEmail());
 
             txtTelefono.setText(((Instructores) tblInstructores.getSelectionModel().getSelectedItem()).getTelefono());
-
+           
             dpkFecha.setValue(((Instructores) tblInstructores.getSelectionModel().getSelectedItem()).getFechaN());
 
         }
@@ -449,7 +451,6 @@ public class InstructoresController implements Initializable {
         txtDireccion.setEditable(false);
         txtEmail.setEditable(false);
         txtTelefono.setEditable(false);
-        dpkFecha.setEditable(false);
 
         txtNombre1.setDisable(true);
         txtNombre2.setDisable(true);
@@ -473,7 +474,6 @@ public class InstructoresController implements Initializable {
         txtDireccion.setEditable(true);
         txtEmail.setEditable(true);
         txtTelefono.setEditable(true);
-        dpkFecha.setEditable(true);
 
         txtNombre1.setDisable(false);
         txtNombre2.setDisable(false);

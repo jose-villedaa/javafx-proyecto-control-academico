@@ -1,11 +1,13 @@
 package org.in5bm.josevilleda.samuelherrera.controllers;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -18,7 +20,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -64,7 +65,7 @@ public class AsignacionesAlumnosController implements Initializable {
     @FXML
     private ImageView imgReporte;
     @FXML
-    private TextField txtId;
+    private JFXTextField txtId;
     @FXML
     private ImageView imgRegresar;
     @FXML
@@ -73,9 +74,9 @@ public class AsignacionesAlumnosController implements Initializable {
     private TableColumn<AsignacionesAlumnos, Integer> colId;
     @FXML
     private TableColumn<AsignacionesAlumnos, String> colCarne;
-
+    
     @FXML
-    private TableColumn<AsignacionesAlumnos, String> colNombreAlumno;
+    private JFXDatePicker dpkFechaAsignacion;
 
     @FXML
     private TableColumn<AsignacionesAlumnos, Integer> colCurso;
@@ -84,12 +85,11 @@ public class AsignacionesAlumnosController implements Initializable {
 
     @FXML
     private ComboBox<Alumnos> cmbAlumno;
+    
     @FXML
     private ComboBox<Cursos> cmbCurso;
 
     private Principal escenarioPrincipal;
-    @FXML
-    private DatePicker dpkFechaAsignacion;
 
     public Principal getEscenarioPrincipal() {
         return escenarioPrincipal;
@@ -255,7 +255,6 @@ public class AsignacionesAlumnosController implements Initializable {
         tblAsignacionesAlumnos.setItems(getAsignacionesAlumnos());
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colCarne.setCellValueFactory(new PropertyValueFactory<>("alumnoId"));
-        colNombreAlumno.setCellValueFactory(new PropertyValueFactory<>("nombreAlumno"));
         colCurso.setCellValueFactory(new PropertyValueFactory<>("cursoId"));
         colFechaAsignacion.setCellValueFactory(new PropertyValueFactory<>("fechaAsignacion"));
         cmbAlumno.setItems(getAlumnos());
@@ -265,7 +264,6 @@ public class AsignacionesAlumnosController implements Initializable {
     private boolean existeElementoSeleccionado() {
         return (tblAsignacionesAlumnos.getSelectionModel().getSelectedItem() != null);
     }
-    
 
     private ObservableList getCursos() {
         ArrayList<Cursos> arrayListCursos = new ArrayList<>();
@@ -442,49 +440,76 @@ public class AsignacionesAlumnosController implements Initializable {
     }
 
     public boolean campoCompletado() {
-        return (cmbAlumno.getSelectionModel() == null || cmbCurso.getSelectionModel() == null || dpkFechaAsignacion.getValue() == null);
+        return (cmbAlumno.getValue() == null || cmbCurso.getValue() == null);
     }
 
     // AGREGAR ASIGNACION
     private boolean agregarAsignacion() {
 
         AsignacionesAlumnos asignacion = new AsignacionesAlumnos();
+        if (dpkFechaAsignacion.getValue() == null) {
 
-        asignacion.setAlumnoId(((Alumnos) cmbAlumno.getSelectionModel().getSelectedItem()).getCarne());
-        asignacion.setCursoId(((Cursos) cmbCurso.getSelectionModel().getSelectedItem()).getId());
-        asignacion.setFechaAsignacion(dpkFechaAsignacion.getValue().atTime(LocalTime.now()));
-        PreparedStatement pstmt = null;
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione La fecha Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
+        } else if (cmbAlumno.getValue() == null) {
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione el alumno Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
 
-        try {
-            pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_asignaciones_alumnos_create(?, ?, ?)}");
+        } else if (cmbCurso.getValue() == null) {
+            Alert conf = new Alert(Alert.AlertType.WARNING);
+            conf.setTitle("Control Academico Monte Carlo");
+            conf.setContentText(" Seleccione el curso Antes de Continuar! ");
+            conf.setHeaderText(null);
+            Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+            stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+            conf.show();
+            
+        } else {
+            asignacion.setAlumnoId(((Alumnos) cmbAlumno.getSelectionModel().getSelectedItem()).getCarne());
+            asignacion.setCursoId(((Cursos) cmbCurso.getSelectionModel().getSelectedItem()).getId());
+            asignacion.setFechaAsignacion(dpkFechaAsignacion.getValue().atTime(LocalTime.now()));
+            PreparedStatement pstmt = null;
 
-            pstmt.setString(1, asignacion.getAlumnoId());
-            pstmt.setInt(2, asignacion.getCursoId());
-            pstmt.setTimestamp(3, Timestamp.valueOf(asignacion.getFechaAsignacion()));
-
-            System.out.println(pstmt.toString());
-
-            pstmt.execute();
-
-            listaObservableAsignaciones.add(asignacion);
-            return true;
-        } catch (SQLException e) {
-            System.err.println("\nSe produjo un error al intentar insertar "
-                    + "el siguiente registro: " + asignacion.toString());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
             try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
+                pstmt = Conexion.getInstance().getConexion()
+                        .prepareCall("{CALL sp_asignaciones_alumnos_create(?, ?, ?)}");
+
+                pstmt.setString(1, asignacion.getAlumnoId());
+                pstmt.setInt(2, asignacion.getCursoId());
+                pstmt.setTimestamp(3, Timestamp.valueOf(asignacion.getFechaAsignacion()));
+
+                System.out.println(pstmt.toString());
+
+                pstmt.execute();
+
+                listaObservableAsignaciones.add(asignacion);
+                return true;
+            } catch (SQLException e) {
+                System.err.println("\nSe produjo un error al intentar insertar "
+                        + "el siguiente registro: " + asignacion.toString());
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (pstmt != null) {
+                        pstmt.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-
         return false;
     }
 
@@ -601,31 +626,22 @@ public class AsignacionesAlumnosController implements Initializable {
                 break;
             case GUARDAR:
 
-                if (campoCompletado()) {
-                    Alert conf = new Alert(Alert.AlertType.WARNING);
-                    conf.setTitle("Control Academico Monte Carlo");
-                    conf.setContentText(" Complete los campos Obligatorios antes de continuar!");
-                    conf.setHeaderText(null);
-                    Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
-                    stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-                    conf.show();
-                } else {
-                    if (agregarAsignacion()) {
-                        limpiarCampos();
-                        deshabilitarCampos();
-                        cargarDatos();
-                        tblAsignacionesAlumnos.setDisable(false);
-                        btnNuevo.setText("Nuevo");
-                        imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
-                        btnModificar.setText("Modificar");
-                        imgModificar.setImage(new Image(PAQUETE_IMAGES + "modificar.png"));
-                        btnEliminar.setDisable(false);
-                        btnEliminar.setVisible(true);
-                        btnReporte.setDisable(false);
-                        btnReporte.setVisible(true);
-                        operacion = Operacion.NINGUNO;
-                    }
+                if (agregarAsignacion()) {
+                    limpiarCampos();
+                    deshabilitarCampos();
+                    cargarDatos();
+                    tblAsignacionesAlumnos.setDisable(false);
+                    btnNuevo.setText("Nuevo");
+                    imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
+                    btnModificar.setText("Modificar");
+                    imgModificar.setImage(new Image(PAQUETE_IMAGES + "modificar.png"));
+                    btnEliminar.setDisable(false);
+                    btnEliminar.setVisible(true);
+                    btnReporte.setDisable(false);
+                    btnReporte.setVisible(true);
+                    operacion = Operacion.NINGUNO;
                 }
+
                 break;
         }
     }

@@ -1,5 +1,6 @@
 package org.in5bm.josevilleda.samuelherrera.controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,19 +46,19 @@ public class CarrerasTecnicasController implements Initializable {
     private Principal escenarioPrincipal;
 
     @FXML
-    private TextField txtCarrera;
+    private JFXTextField txtCarrera;
 
     @FXML
-    private TextField txtCodigoTecnico;
+    private JFXTextField txtCodigoTecnico;
 
     @FXML
-    private TextField txtGrado;
+    private JFXTextField txtGrado;
 
     @FXML
-    private TextField txtJornada;
+    private JFXTextField txtJornada;
 
     @FXML
-    private TextField txtSeccion;
+    private JFXTextField txtSeccion;
 
     @FXML
     private Button btnNuevo;

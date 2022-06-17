@@ -653,8 +653,8 @@ DROP PROCEDURE IF EXISTS sp_cursos_create $$
 CREATE PROCEDURE sp_cursos_create(
     IN _nombre_curso VARCHAR(255),
     IN _ciclo YEAR,
+	IN _cupo_maximo INT,
     IN _cupo_minimo INT,
-    IN _cupo_maximo INT,
     IN _carrera_tecnica_id VARCHAR(6),
     IN _horario_id INT,
     IN _instructor_id INT,
@@ -664,8 +664,8 @@ BEGIN
 	INSERT INTO cursos(
         nombre_curso,
         ciclo,
-        cupo_minimo,
         cupo_maximo,
+        cupo_minimo,
         carrera_tecnica_id,
         horario_id,
         instructor_id,
@@ -674,8 +674,8 @@ BEGIN
 	VALUES(
         _nombre_curso,
         _ciclo,
-        _cupo_minimo,
         _cupo_maximo,
+        _cupo_minimo,
         _carrera_tecnica_id,
         _horario_id,
         _instructor_id,
@@ -692,8 +692,8 @@ BEGIN
 		id,
         nombre_curso,
         ciclo,
-        cupo_minimo,
         cupo_maximo,
+        cupo_minimo,
         carrera_tecnica_id,
         horario_id,
         instructor_id,
@@ -712,8 +712,8 @@ BEGIN
 		id,
         nombre_curso,
         ciclo,
-        cupo_minimo,
         cupo_maximo,
+        cupo_minimo,
         carrera_tecnica_id,
         horario_id,
         instructor_id,
@@ -731,8 +731,8 @@ CREATE PROCEDURE sp_cursos_update (
 	IN _id INT,
     IN _nombre_curso VARCHAR(255),
     IN _ciclo YEAR,
-    IN _cupo_minimo INT,
     IN _cupo_maximo INT,
+    IN _cupo_minimo INT,
     IN _carrera_tecnica_id VARCHAR(6),
     IN _horario_id INT,
     IN _instructor_id INT,
@@ -745,8 +745,8 @@ BEGIN
 		id = _id,
         nombre_curso = _nombre_curso,
 		ciclo = _ciclo,
-        cupo_minimo = _cupo_minimo,
         cupo_maximo = _cupo_maximo,
+        cupo_minimo = _cupo_minimo,
         carrera_tecnica_id = _carrera_tecnica_id,
         horario_id = _horario_id,
         instructor_id = _instructor_id,
@@ -774,14 +774,17 @@ DELIMITER ;
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_asignaciones_alumnos_create $$
 CREATE PROCEDURE sp_asignaciones_alumnos_create(
+IN _alumno_id VARCHAR(16),
 IN _curso_id INT,
 IN _fecha_asignacion DATETIME
 )
 BEGIN
 INSERT INTO asignaciones_alumnos(
+alumno_id,
 curso_id,
 fecha_asignacion
 ) VALUES (
+_alumno_id,
 _curso_id,
 _fecha_asignacion
 );
@@ -956,16 +959,16 @@ SELECT @total;
 
 -- CRUD INSTRUCTORES --
 
-call sp_instructores_create("01","Luis","Esteban","Josue","Aguilar","Valle","5tas Av Zona 12","iabarcae@yahoo.es","23856790","1980-03-04");
-call sp_instructores_create("02","Angel","Ramiro","","Batres","Dominguez","Diagonal 6, 19-30 Zona 10","Sb.nashxo.sk8@hotmail.com","53205404","1992-02-19");
-call sp_instructores_create("03", "José","Ramón","Alberto","Peña","Morales","Diagonal 6, 10-65 Zona 10","ikis_rojo@hotmail.com","23829100","1971-11-10");
-call sp_instructores_create("Juan","Carlos","","Lopéz","Muralles","23 Calle 1-05 Zona 1","niikhox@hotmail.com","22210705","1974-06-30");
-call sp_instructores_create("05", "Carlos","Leonel","","Herrera","Luna","20 Calle 7-62 Zona 7","dantekol@hotmail.com","22381381","1993-11-29");
-call sp_instructores_create("06", "Guillermo","Moises","","Gómez","Monterroso","11 Av 7-38 Zona 1","pato_one@hotmail.com","53313932","1989-12-11");
-call sp_instructores_create("07", "Pedro","Josue","","García","Vanegas","10 Av 3-76 Zona 4","joacocordero@gmail.com","23604503","1998-04-29");
-call sp_instructores_create("08", "Wesly","Isaac","","Mendoza","Perez","11 Calle 0-65 Zona 10","pecmor63@gmail.com","23328081","1981-07-06");
-call sp_instructores_create("09", "Ezequiel","Anderson","","Sosa","Franco","37 Calle A 19-09 Zona 12","aespinz@hotmail.com","24769885","1978-07-21");
-call sp_instructores_create("010", "Francisco","Gabriel","","Aquino","Barrios","7a. Av. 9-63 Zona 9","filipofox@hotmail.com","23315060","1988-10-26");
+call sp_instructores_create("Luis","Esteban","Josue","Aguilar","Valle","5tas Av Zona 12","iabarcae@yahoo.es","23856790","1980-03-04");
+call sp_instructores_create("Angel","Ramiro","","Batres","Dominguez","Diagonal 6, 19-30 Zona 10","Sb.nashxo.sk8@hotmail.com","53205404","1992-02-19");
+call sp_instructores_create("José","Ramón","Alberto","Peña","Morales","Diagonal 6, 10-65 Zona 10","ikis_rojo@hotmail.com","23829100","1971-11-10");
+call sp_instructores_create("Carlos","","Lopéz","Muralles","23 Calle 1-05 Zona 1","niikhox@hotmail.com","22210705","1974-06-30");
+call sp_instructores_create("Carlos","Leonel","","Herrera","Luna","20 Calle 7-62 Zona 7","dantekol@hotmail.com","22381381","1993-11-29");
+call sp_instructores_create("Guillermo","Moises","","Gómez","Monterroso","11 Av 7-38 Zona 1","pato_one@hotmail.com","53313932","1989-12-11");
+call sp_instructores_create("Pedro","Josue","","García","Vanegas","10 Av 3-76 Zona 4","joacocordero@gmail.com","23604503","1998-04-29");
+call sp_instructores_create("Wesly","Isaac","","Mendoza","Perez","11 Calle 0-65 Zona 10","pecmor63@gmail.com","23328081","1981-07-06");
+call sp_instructores_create("Ezequiel","Anderson","","Sosa","Franco","37 Calle A 19-09 Zona 12","aespinz@hotmail.com","24769885","1978-07-21");
+call sp_instructores_create("Francisco","Gabriel","","Aquino","Barrios","7a. Av. 9-63 Zona 9","filipofox@hotmail.com","23315060","1988-10-26");
 
 call sp_instructores_read();
 
@@ -1024,16 +1027,16 @@ SELECT @total;
 -- -------------------------------------------------------------------------------------------
 
 -- CRUD CURSOS --
-call sp_cursos_create("1","Ciencias Sociales","2022","34","20","IN5BM","1","01","C-29");
+call sp_cursos_create("Ciencias Sociales","2022","34","20","IN5BM","1","01","C-29");
 call sp_cursos_create("Lengua y Literatura","2022","30","23","IN4BV","2","02","D-9");
-call sp_cursos_create("3","Inglés","2022","50","40","IN6DV","3","03","E-66");
-call sp_cursos_create("4","Estadistica","2022","25","20","IN6CM","4","04","A-40");
-call sp_cursos_create("5","Taller","2022","60","54","IN4CV","5","05","B-25");
-call sp_cursos_create("6","Quimica","2022","20","16","IN5AV","6","06","J-11");
-call sp_cursos_create("7","Matematicas","2022","55","47","IN5AM","7","07","H-32");
-call sp_cursos_create("8","Ética","2022","44","39","IN4EM","8","08","K-14");
-call sp_cursos_create("9","Cálculo","2022","34","29","IN6DM","9","09","S-32");
-call sp_cursos_create("10","Dibujo","2022","40","27","IN4EV","10","010","M-62");
+call sp_cursos_create("Inglés","2022","50","40","IN6DV","3","03","E-66");
+call sp_cursos_create("Estadistica","2022","25","20","IN6CM","4","04","A-40");
+call sp_cursos_create("Taller","2022","60","54","IN4CV","5","05","B-25");
+call sp_cursos_create("Quimica","2022","20","16","IN5AV","6","06","J-11");
+call sp_cursos_create("Matematicas","2022","55","47","IN5AM","7","07","H-32");
+call sp_cursos_create("Ética","2022","44","39","IN4EM","8","08","K-14");
+call sp_cursos_create("Cálculo","2022","34","29","IN6DM","9","09","S-32");
+call sp_cursos_create("Dibujo","2022","40","27","IN4EV","10","010","M-62");
 
 	
 
@@ -1058,16 +1061,16 @@ SELECT @total;
 
 
 -- CRUD ASIGNACIONES_ALUMNOS --
-call sp_asignaciones_alumnos_create("1","2021075","1","2022-01-01");
-call sp_asignaciones_alumnos_create("2","2021080","2","2022-01-01");
-call sp_asignaciones_alumnos_create("3","2021175","3","2022-01-01");
-call sp_asignaciones_alumnos_create("4","2021065","4","2022-01-01");
-call sp_asignaciones_alumnos_create("5","2021024","5","2022-01-01");
-call sp_asignaciones_alumnos_create("6","2021022","6","2022-01-01");
-call sp_asignaciones_alumnos_create("7","2021067","7","2022-01-01");
-call sp_asignaciones_alumnos_create("8","2021150","8","2022-01-01");
-call sp_asignaciones_alumnos_create("9","2021100","9","2022-01-01");
-call sp_asignaciones_alumnos_create("10","2021099","10","2022-01-01");
+call sp_asignaciones_alumnos_create("2021075","1","2022-01-01");
+call sp_asignaciones_alumnos_create("2021080","2","2022-01-01");
+call sp_asignaciones_alumnos_create("2021175","3","2022-01-01");
+call sp_asignaciones_alumnos_create("2021065","4","2022-01-01");
+call sp_asignaciones_alumnos_create("2021024","5","2022-01-01");
+call sp_asignaciones_alumnos_create("2021022","6","2022-01-01");
+call sp_asignaciones_alumnos_create("2021024","17","2022-01-01 06:20:54");
+call sp_asignaciones_alumnos_create("2021150","8","2022-01-01");
+call sp_asignaciones_alumnos_create("2021100","9","2022-01-01");
+call sp_asignaciones_alumnos_create("2021099","10","2022-01-01");
 
 call sp_asignaciones_alumnos_read();
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,11 +21,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" stylesheets="@../resources/css/EstiloModulos.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.in5bm.josevilleda.samuelherrera.controllers.SalonesController">
    <children>
-      <ImageView fitHeight="317.0" fitWidth="596.0" layoutX="447.0" layoutY="-53.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/images/Logo%20colegio.png" />
-         </image>
-      </ImageView>
       <BorderPane prefHeight="700.0" prefWidth="1200.0">
          <left>
             <Pane id="panel-navegacion" prefHeight="691.0" prefWidth="250.0" BorderPane.alignment="CENTER">
@@ -131,12 +126,22 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <Label layoutX="8.0" layoutY="678.0" text="Monte Carlo 2022 ®" textFill="WHITE">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </left>
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
+                  <ImageView fitHeight="707.0" fitWidth="1226.0" layoutX="-1.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/fondo%20figuras.png" />
+                     </image>
+                  </ImageView>
                   <GridPane layoutX="48.0" layoutY="223.0" prefHeight="366.0" prefWidth="193.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -169,9 +174,6 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCodigoSalon" disable="true" prefHeight="25.0" prefWidth="161.0" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtDescripcionSalon" disable="true" GridPane.rowIndex="3" />
-                        <TextField fx:id="txtCapacidadMaxima" disable="true" GridPane.rowIndex="5" />
                         <Label text="Nivel:" GridPane.rowIndex="8">
                            <font>
                               <Font size="15.0" />
@@ -182,8 +184,11 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtEdificio" disable="true" prefHeight="25.0" prefWidth="161.0" GridPane.rowIndex="7" />
-                        <Spinner fx:id="spnNivel" disable="true" editable="true" prefHeight="25.0" prefWidth="195.0" GridPane.rowIndex="9" />
+                        <Spinner fx:id="spnNivel" disable="true" prefHeight="25.0" prefWidth="195.0" GridPane.rowIndex="9" />
+                        <JFXTextField fx:id="txtCodigoSalon" disable="true" editable="false" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="txtDescripcionSalon" disable="true" editable="false" GridPane.rowIndex="3" />
+                        <JFXTextField fx:id="txtEdificio" disable="true" editable="false" GridPane.rowIndex="7" />
+                        <Spinner fx:id="spnCapacidadMaxima" disable="true" prefHeight="25.0" prefWidth="247.0" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
                   <TableView fx:id="tblSalones" layoutX="279.0" layoutY="177.0" onKeyReleased="#seleccionarElemento" onMouseClicked="#seleccionarElemento" prefHeight="482.0" prefWidth="639.0">
@@ -198,6 +203,11 @@
                   <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="842.0" layoutY="70.0" onMouseClicked="#clicMenuPrincipal" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../resources/images/flecha-izquierda.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="324.0" fitWidth="576.0" layoutX="187.0" layoutY="-56.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/Logo%20Horizontal.png" />
                      </image>
                   </ImageView>
                </children>

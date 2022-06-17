@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ARCHIVOS%202021075/in5bm-control-academico-jose-villeda-samuel-herrera/src/org/in5bm/josevilleda/samuelherrera/controllers/AsignacionesAlumnosController.java</file>
             <file>file:/D:/ARCHIVOS%202021075/in5bm-control-academico-jose-villeda-samuel-herrera/src/org/in5bm/josevilleda/samuelherrera/controllers/CursosController.java</file>
             <file>file:/D:/ARCHIVOS%202021075/in5bm-control-academico-jose-villeda-samuel-herrera/src/org/in5bm/josevilleda/samuelherrera/db/db_control_academico_in5bm.sql</file>
-            <file>file:/D:/ARCHIVOS%202021075/in5bm-control-academico-jose-villeda-samuel-herrera/src/org/in5bm/josevilleda/samuelherrera/controllers/InstructoresController.java</file>
+            <file>file:/D:/ARCHIVOS%202021075/in5bm-control-academico-jose-villeda-samuel-herrera/src/org/in5bm/josevilleda/samuelherrera/controllers/SalonesController.java</file>
             <file>file:/D:/ARCHIVOS%202021075/in5bm-control-academico-jose-villeda-samuel-herrera/src/org/in5bm/josevilleda/samuelherrera/controllers/HorariosController.java</file>
         </group>
     </open-files>

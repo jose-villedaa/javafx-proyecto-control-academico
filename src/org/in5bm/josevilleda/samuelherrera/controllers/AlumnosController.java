@@ -1,5 +1,6 @@
 package org.in5bm.josevilleda.samuelherrera.controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -45,22 +46,22 @@ public class AlumnosController implements Initializable {
     private Principal escenarioPrincipal;
 
     @FXML
-    private TextField txtCarne;
+    private JFXTextField txtCarne;
 
     @FXML
-    private TextField txtNombre1;
+    private JFXTextField txtNombre1;
 
     @FXML
-    private TextField txtNombre2;
+    private JFXTextField txtNombre2;
 
     @FXML
-    private TextField txtNombre3;
+    private JFXTextField txtNombre3;
 
     @FXML
-    private TextField txtApellido1;
+    private JFXTextField txtApellido1;
 
     @FXML
-    private TextField txtApellido2;
+    private JFXTextField txtApellido2;
 
     @FXML
     private Button btnNuevo;

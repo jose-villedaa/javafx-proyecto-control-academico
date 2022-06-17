@@ -1,5 +1,6 @@
 package org.in5bm.josevilleda.samuelherrera.controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -67,7 +68,7 @@ public class HorariosController implements Initializable {
     private JFXTimePicker tmpHorarioSalida;
 
     @FXML
-    private TextField txtId;
+    private JFXTextField txtId;
 
     @FXML
     private TableView<Horarios> tblHorarios;
@@ -155,6 +156,10 @@ public class HorariosController implements Initializable {
     public boolean existeElementoSeleccionado() {
         return (tblHorarios.getSelectionModel().getSelectedItem() != null);
 
+    }
+
+    public boolean campoCompletado() {
+        return (tmpHorarioInicio.getValue() == null || tmpHorarioSalida.getValue() == null);
     }
 
     @FXML
@@ -277,7 +282,7 @@ public class HorariosController implements Initializable {
 
         return false;
     }
-    
+
     //Agregar Horarios
     private boolean actualizarHorario() {
         Horarios horarios = new Horarios();
@@ -332,7 +337,7 @@ public class HorariosController implements Initializable {
 
         return false;
     }
-    
+
     //Eliminar Instructor
     public boolean eliminarHorario() {
         if (existeElementoSeleccionado()) {
@@ -628,32 +633,46 @@ public class HorariosController implements Initializable {
                 break;
 
             case GUARDAR:
-                if (agregarHorario()) {
 
-                    cargarDatos();
-                    limpiarCampos();
-                    deshabilitarCampos();
+                if (campoCompletado()) {
+                    
+                    Alert conf = new Alert(Alert.AlertType.WARNING);
+                    conf.setTitle("Control Academico Monte Carlo");
+                    conf.setContentText(" Complete los campos Obligatorios antes de continuar!");
+                    conf.setHeaderText(null);
+                    Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
+                    stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
+                    conf.show();
 
-                    tblHorarios.getSelectionModel().clearSelection();
+                } else {
 
-                    btnNuevo.setText("Nuevo");
-                    imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
+                    if (agregarHorario()) {
 
-                    btnModificar.setText("Modificar");
-                    imgModificar.setImage(new Image(PAQUETE_IMAGES + "modificar.png"));
+                        cargarDatos();
+                        limpiarCampos();
+                        deshabilitarCampos();
 
-                    btnEliminar.setDisable(false);
-                    btnEliminar.setVisible(true);
+                        tblHorarios.getSelectionModel().clearSelection();
 
-                    btnReporte.setDisable(false);
-                    btnReporte.setVisible(true);
+                        btnNuevo.setText("Nuevo");
+                        imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
 
-                    tblHorarios.setDisable(false);
+                        btnModificar.setText("Modificar");
+                        imgModificar.setImage(new Image(PAQUETE_IMAGES + "modificar.png"));
 
-                    deshabilitarCampos();
+                        btnEliminar.setDisable(false);
+                        btnEliminar.setVisible(true);
 
-                    operacion = Operacion.NINGUNO;
+                        btnReporte.setDisable(false);
+                        btnReporte.setVisible(true);
 
+                        tblHorarios.setDisable(false);
+
+                        deshabilitarCampos();
+
+                        operacion = Operacion.NINGUNO;
+
+                    }
                 }
                 break;
         }
