@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -26,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.in5bm.josevilleda.samuelherrera.db.Conexion;
 import org.in5bm.josevilleda.samuelherrera.models.Salones;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 import org.in5bm.josevilleda.samuelherrera.system.Principal;
 
 /**
@@ -63,6 +66,10 @@ public class SalonesController implements Initializable {
 
     @FXML
     private TextField txtDescripcionSalon;
+    
+    @FXML
+    private TextField txtContador;
+
 
     @FXML
     private TextField txtEdificio;
@@ -120,6 +127,8 @@ public class SalonesController implements Initializable {
         spnCapacidadMaxima.setValueFactory(valueFactoryCapacidad);
 
         cargarDatos();
+        
+        ContarRegistros();
     }
 
     public void cargarDatos() {
@@ -129,6 +138,10 @@ public class SalonesController implements Initializable {
         colCapacidadMaxima.setCellValueFactory(new PropertyValueFactory<Salones, Integer>("capacidadMaxima"));
         colEdificio.setCellValueFactory(new PropertyValueFactory<Salones, String>("edificio"));
         colNivel.setCellValueFactory(new PropertyValueFactory<Salones, Integer>("nivel"));
+    }
+    
+    private void ContarRegistros(){
+        txtContador.setText(String.valueOf(listaSalones.size()));
     }
 
     public boolean existeElementoSeleccionado() {
@@ -449,6 +462,7 @@ public class SalonesController implements Initializable {
                 if (agregarSalon()) {
 
                     cargarDatos();
+                    ContarRegistros();
                     limpiarCampos();
                     deshabilitarCampos();
 
@@ -526,6 +540,7 @@ public class SalonesController implements Initializable {
                             Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
                             stageAlert.getIcons().add(icon);
                             alert.show();
+                            ContarRegistros();
 
                         } else if (result.get().equals(ButtonType.CANCEL)) {
 
@@ -651,16 +666,9 @@ public class SalonesController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("AVISO");
-        alert.setContentText("Esta Funcion solo esta disponible en la version PRO");
-        alert.setHeaderText(null);
-
-        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
-
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-
-        alert.show();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("nombre", "Jose Villeda");
+        GenerarReporte.getInstance().mostrarReporte("ReporteSalones.jasper", parametros, "Reporte de Salones");
     }
 
     @FXML

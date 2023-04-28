@@ -1,0 +1,21 @@
+/* 
+    Created on : 03 Jun. 2022, 21:41:17
+    Author     : Jose Mauricio Villeda Morales
+*/
+
+#anchor-pane{
+-fx-background-color:  #EFF1F5;
+}
+
+.letras-alumno{
+    -fx-font-weight: bold;
+}
+
+#anchor-login{
+-fx-background-color:  #F1F1F2;
+}
+
+#pane-imagen{
+   -fx-background-color: #566573
+}
+

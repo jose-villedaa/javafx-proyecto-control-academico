@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -33,6 +35,7 @@ import javafx.util.StringConverter;
 import javafx.util.converter.LocalTimeStringConverter;
 import org.in5bm.josevilleda.samuelherrera.db.Conexion;
 import org.in5bm.josevilleda.samuelherrera.models.Horarios;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 import org.in5bm.josevilleda.samuelherrera.system.Principal;
 
 public class HorariosController implements Initializable {
@@ -69,6 +72,9 @@ public class HorariosController implements Initializable {
 
     @FXML
     private JFXTextField txtId;
+    
+    @FXML
+    private TextField txtContador;
 
     @FXML
     private TableView<Horarios> tblHorarios;
@@ -139,6 +145,8 @@ public class HorariosController implements Initializable {
         tmpHorarioSalida.setConverter(defaultConverter2);
 
         cargarDatos();
+        
+        ContarRegistros();
     }
 
     public void cargarDatos() {
@@ -151,6 +159,10 @@ public class HorariosController implements Initializable {
         colMiercoles.setCellValueFactory(new PropertyValueFactory<>("miercoles"));
         colJueves.setCellValueFactory(new PropertyValueFactory<>("jueves"));
         colViernes.setCellValueFactory(new PropertyValueFactory<>("viernes"));
+    }
+    
+    private void ContarRegistros(){
+        txtContador.setText(String.valueOf(listaObservableHorarios.size()));
     }
 
     public boolean existeElementoSeleccionado() {
@@ -465,6 +477,8 @@ public class HorariosController implements Initializable {
                             stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
 
                             alert.show();
+                            
+                            ContarRegistros();
                         }
 
                     } else if (result.get().equals(ButtonType.CANCEL)) {
@@ -635,7 +649,7 @@ public class HorariosController implements Initializable {
             case GUARDAR:
 
                 if (campoCompletado()) {
-                    
+
                     Alert conf = new Alert(Alert.AlertType.WARNING);
                     conf.setTitle("Control Academico Monte Carlo");
                     conf.setContentText(" Complete los campos Obligatorios antes de continuar!");
@@ -650,6 +664,7 @@ public class HorariosController implements Initializable {
 
                         cargarDatos();
                         limpiarCampos();
+                        ContarRegistros();
                         deshabilitarCampos();
 
                         tblHorarios.getSelectionModel().clearSelection();
@@ -680,16 +695,9 @@ public class HorariosController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("AVISO");
-        alert.setContentText("Esta Funcion solo esta disponible en la version PRO");
-        alert.setHeaderText(null);
-
-        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
-
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-
-        alert.show();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("nombre", "Jose Villeda");
+        GenerarReporte.getInstance().mostrarReporte("ReporteHorarios.jasper", parametros, "Reporte de Horarios");
     }
 
 }

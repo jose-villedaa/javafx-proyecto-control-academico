@@ -3,14 +3,30 @@ use db_control_academico_in5bm;
 
 /* Estudiantes:
 * Jose Villeda: 2021075
-* Samuel Herrera : 2021080
 * 
 * Grupo (2/2) Lunes
 * Codigo Tecnico : IN5BM
-* Fecha: 26/04/2022
-* Fecha modificacion: 10/05/2022
+* Fecha: 17/06/2022
+* Fecha modificacion: 17/06/2022
 *
 */
+
+DROP TABLE IF EXISTS rol;
+CREATE TABLE IF NOT EXISTS rol (
+id INT NOT NULL,
+descripcion VARCHAR(50) NOT NULL,
+PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS usuario;
+CREATE TABLE IF NOT EXISTS usuario(
+user VARCHAR(25) NOT NULL,
+pass VARCHAR (255) NOT NULL,
+nombre VARCHAR(50) NOT NULL,
+rol_id INT NOT NULL,
+PRIMARY KEY (user),
+CONSTRAINT fk_usuario_rol FOREIGN KEY (rol_id) REFERENCES rol(id)
+);
 
 CREATE TABLE IF NOT EXISTS alumnos (
 	carne VARCHAR (16) NOT NULL,
@@ -165,6 +181,27 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_alumnos_reporte$$
+CREATE PROCEDURE sp_alumnos_reporte()
+BEGIN 
+	SELECT
+		a.carne,
+        CONCAT(
+			a.nombre1," ",
+            IF(a.nombre2 IS NULL," ",a.nombre2)," ",
+            IF(a.nombre3 IS NULL," ",a.nombre3)
+        )AS nombres,
+        CONCAT(
+			a.apellido1," ",
+            IF(a.apellido2 IS NULL," ",a.apellido2)
+        )AS apellidos
+        
+    FROM 
+		alumnos AS a;
+END $$
+DELIMITER ;
+
 -- ACTUALIZAR --
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_alumnos_update $$
@@ -229,6 +266,21 @@ BEGIN
 		_edificio, 
 		_nivel
 	);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_salones_report $$
+CREATE PROCEDURE sp_salones_report()
+BEGIN 
+	SELECT 
+		s.codigo_salon,
+        IF(s.nivel IS NULL," ",s.nivel),
+        IF(s.edificio IS NULL," ",s.edificio),
+        s.capacidad_maxima,
+        IF(s.descripcion IS NULL," ",s.descripcion)
+    FROM 
+		salones AS s;
 END $$
 DELIMITER ;
 
@@ -329,6 +381,21 @@ BEGIN
 		_seccion,
 		_jornada 
 	);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_carreras_tecnicas_report$$
+CREATE PROCEDURE sp_carreras_tecnicas_report()
+BEGIN 
+	SELECT
+		c.codigo_tecnico,
+        c.carrera,
+        c.grado,
+        c.seccion,
+        c.jornada
+    FROM 
+		carreras_tecnicas AS c;
 END $$
 DELIMITER ;
 
@@ -443,6 +510,28 @@ BEGIN
     );
     END $$
     DELIMITER ;
+    
+DELIMITER $$
+DROP PROCEDURE IF EXISTS  sp_instructores_reporte$$
+CREATE PROCEDURE sp_instructores_reporte()
+BEGIN 
+	SELECT 
+		i.id,
+        CONCAT(
+			i.nombre1," ",
+            IF(i.nombre2 IS NULL," ",i.nombre2)," ",
+            IF(i.nombre3 IS NULL," ",i.nombre3)," ",
+            i.apellido1," ",
+            IF(i.apellido2 IS NULL," ",i.apellido2)
+        )AS nombre_completo,
+        IF(i.direccion IS NULL," ",i.direccion),
+        i.email,
+        i.telefono,
+        IF(i.fecha_nacimiento IS NULL," ",i.fecha_nacimiento)
+	FROM 
+		instructores AS i;
+END $$
+DELIMITER ;
     
 DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_instructores_read $$
@@ -568,6 +657,24 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_horarios_report $$
+CREATE PROCEDURE sp_horarios_report()
+BEGIN 
+	SELECT 
+		h.id,
+		h.horario_inicio, horario_final,
+		IF(h.lunes IS NULL," ", IF(h.lunes IS TRUE,"Si", "No") ) AS lunes,
+		IF(h.martes IS NULL," ", IF(h.martes IS TRUE,"Si", "No") ) AS martes,
+		IF(h.miercoles IS NULL," ", IF(h.miercoles IS TRUE,"Si", "No") ) AS miercoles,
+		IF(h.jueves IS NULL," ",IF(h.jueves IS TRUE,"Si", "No") ) AS jueves,
+		IF(h.viernes IS NULL," ",IF(h.viernes IS TRUE,"Si", "No") )AS viernes
+    FROM 
+		horarios AS h;
+END $$
+DELIMITER ;
+
+
+DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_horarios_read $$
 CREATE PROCEDURE sp_horarios_read ()
 BEGIN
@@ -685,6 +792,41 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_cursos_report$$
+CREATE PROCEDURE sp_cursos_report()
+BEGIN 
+	SELECT 
+		c.id,
+        c.nombre_curso,
+        IF(c.ciclo IS NULL," ",c.ciclo),
+        IF(c.cupo_maximo IS NULL," ",c.cupo_maximo),
+        IF(c.cupo_minimo IS NULL," ",c.cupo_minimo),
+        c.carrera_tecnica_id,
+        ct.carrera,
+        c.horario_id,
+        h.horario_final,
+        h.horario_inicio,
+        c.instructor_id,
+        CONCAT(
+			i.nombre1," ",
+            i.apellido1
+        )AS nombre_instructor,
+        c.salon_id
+    FROM
+		cursos AS c
+        INNER JOIN carreras_tecnicas AS ct
+        INNER JOIN horarios AS h
+        INNER JOIN instructores AS i
+        INNER JOIN salones AS s
+        ON c.carrera_tecnica_id = ct.codigo_tecnico
+        AND c.horario_id = h.id
+        AND c.instructor_id = i.id
+        AND c.salon_id = s.codigo_salon;
+			
+END $$
+DELIMITER ;
+
+DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_cursos_read $$
 CREATE PROCEDURE sp_cursos_read ()
 BEGIN
@@ -700,6 +842,84 @@ BEGIN
         salon_id
 	FROM 
 		cursos;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_cursos_read_id $$
+CREATE PROCEDURE sp_cursos_read_id ()
+BEGIN
+	SELECT
+		c.id
+	FROM 
+		cursos as c;
+
+END $$
+DELIMITER ;
+
+call sp_cursos_read_id();
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_validacion_existencia$$
+CREATE PROCEDURE sp_validacion_existencia(IN _user VARCHAR(25), IN _pass VARCHAR(255))
+    BEGIN 
+        SELECT
+        * 
+        FROM
+        usuario
+        WHERE
+        user =_user AND
+        pass = _pass;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_validacion_rol$$
+CREATE PROCEDURE sp_validacion_rol(_user VARCHAR(25))
+    BEGIN 
+        SELECT
+        r.descripcion
+        FROM
+        usuario , rol AS r
+        WHERE
+        usuario.rol_id = r.id AND
+        user =_user;
+END $$
+
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_cursos_report_by_id$$
+CREATE PROCEDURE sp_cursos_report_by_id(IN _id INT)
+BEGIN
+    SELECT
+        c.id,
+        c.nombre_curso,
+        IF(c.ciclo IS NULL," ",c.ciclo),
+        IF(c.cupo_maximo IS NULL," ",c.cupo_maximo),
+        IF(c.cupo_minimo IS NULL," ",c.cupo_minimo),
+        c.carrera_tecnica_id,
+        ct.carrera,
+        c.horario_id,
+        h.horario_inicio,
+        h.horario_final,
+        c.instructor_id,
+        CONCAT(
+            i.nombre1," ",
+            i.apellido1
+        )AS nombre_instructor,
+        c.salon_id
+    FROM
+        cursos AS c
+        INNER JOIN carreras_tecnicas AS ct
+        INNER JOIN horarios AS h
+        INNER JOIN instructores AS i
+        INNER JOIN salones AS s
+        ON c.carrera_tecnica_id = ct.codigo_tecnico
+        AND c.horario_id = h.id
+        AND c.instructor_id = i.id
+        AND c.salon_id = s.codigo_salon
+    WHERE c.id=_id;
+
 END $$
 DELIMITER ;
 
@@ -791,6 +1011,66 @@ _fecha_asignacion
 END $$
 DELIMITER ;
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_asignaciones_alumnos_report$$
+CREATE PROCEDURE sp_asignaciones_alumnos_report()
+BEGIN 
+	SELECT
+    aa.id,
+    aa.alumno_id,
+    CONCAT(
+		a.nombre1," ",
+		IF(a.nombre2 IS NULL," ",a.nombre2)," ",
+		IF(a.nombre3 IS NULL," ",a.nombre3)," ",
+        a.apellido1," ",
+		IF(a.apellido2 IS NULL," ",a.apellido2)
+	)AS nombre_completo,
+    aa.curso_id,
+    c.nombre_curso,
+    IF(aa.fecha_asignacion IS NULL," ",aa.fecha_asignacion)
+	FROM 
+		asignaciones_alumnos AS aa 
+        INNER JOIN alumnos AS a
+        INNER JOIN cursos AS c
+	ON 
+		aa.alumno_id = a.carne
+	AND 
+		aa.curso_id=c.id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_asignaciones_alumnos_report_by_id$$
+CREATE PROCEDURE sp_asignaciones_alumnos_report_by_id(
+    _id INT)
+BEGIN
+    SELECT
+    aa.id,
+    aa.alumno_id,
+    CONCAT(
+        a.nombre1," ",
+        IF(a.nombre2 IS NULL," ",a.nombre2)," ",
+        IF(a.nombre3 IS NULL," ",a.nombre3)," ",
+        a.apellido1," ",
+        IF(a.apellido2 IS NULL," ",a.apellido2)
+    )AS nombre_completo,
+    aa.curso_id,
+    c.nombre_curso,
+    IF(aa.fecha_asignacion IS NULL," ",aa.fecha_asignacion)
+    FROM
+        asignaciones_alumnos AS aa
+        INNER JOIN alumnos AS a
+        INNER JOIN cursos AS c
+    ON
+        aa.alumno_id = a.carne
+    AND
+        aa.curso_id=c.id
+    WHERE
+        aa.id=_id;
+END $$
+DELIMITER ;
+
+
 
 
 DELIMITER $$
@@ -804,6 +1084,17 @@ asignaciones_alumnos.curso_id,
 asignaciones_alumnos.fecha_asignacion
 FROM
 asignaciones_alumnos;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_asignaciones_alumnos_read_id $$
+CREATE PROCEDURE sp_asignaciones_alumnos_read_id()
+BEGIN
+SELECT
+a.id
+FROM
+asignaciones_alumnos as a;
 END $$
 DELIMITER ;
 
@@ -855,6 +1146,8 @@ BEGIN
 DELETE FROM asignaciones_alumnos WHERE id = _id;
 END $$
 DELIMITER ;
+
+
 
 
 
@@ -959,16 +1252,16 @@ SELECT @total;
 
 -- CRUD INSTRUCTORES --
 
-call sp_instructores_create("Luis","Esteban","Josue","Aguilar","Valle","5tas Av Zona 12","iabarcae@yahoo.es","23856790","1980-03-04");
-call sp_instructores_create("Angel","Ramiro","","Batres","Dominguez","Diagonal 6, 19-30 Zona 10","Sb.nashxo.sk8@hotmail.com","53205404","1992-02-19");
-call sp_instructores_create("José","Ramón","Alberto","Peña","Morales","Diagonal 6, 10-65 Zona 10","ikis_rojo@hotmail.com","23829100","1971-11-10");
-call sp_instructores_create("Carlos","","Lopéz","Muralles","23 Calle 1-05 Zona 1","niikhox@hotmail.com","22210705","1974-06-30");
-call sp_instructores_create("Carlos","Leonel","","Herrera","Luna","20 Calle 7-62 Zona 7","dantekol@hotmail.com","22381381","1993-11-29");
-call sp_instructores_create("Guillermo","Moises","","Gómez","Monterroso","11 Av 7-38 Zona 1","pato_one@hotmail.com","53313932","1989-12-11");
-call sp_instructores_create("Pedro","Josue","","García","Vanegas","10 Av 3-76 Zona 4","joacocordero@gmail.com","23604503","1998-04-29");
-call sp_instructores_create("Wesly","Isaac","","Mendoza","Perez","11 Calle 0-65 Zona 10","pecmor63@gmail.com","23328081","1981-07-06");
-call sp_instructores_create("Ezequiel","Anderson","","Sosa","Franco","37 Calle A 19-09 Zona 12","aespinz@hotmail.com","24769885","1978-07-21");
-call sp_instructores_create("Francisco","Gabriel","","Aquino","Barrios","7a. Av. 9-63 Zona 9","filipofox@hotmail.com","23315060","1988-10-26");
+call sp_instructores_create("01","Luis","Esteban","Josue","Aguilar","Valle","5tas Av Zona 12","iabarcae@yahoo.es","23856790","1980-03-04");
+call sp_instructores_create("02","Angel","Ramiro","","Batres","Dominguez","Diagonal 6, 19-30 Zona 10","Sb.nashxo.sk8@hotmail.com","53205404","1992-02-19");
+call sp_instructores_create("03", "José","Ramón","Alberto","Peña","Morales","Diagonal 6, 10-65 Zona 10","ikis_rojo@hotmail.com","23829100","1971-11-10");
+call sp_instructores_create("Juan","Carlos","","Lopéz","Muralles","23 Calle 1-05 Zona 1","niikhox@hotmail.com","22210705","1974-06-30");
+call sp_instructores_create("05", "Carlos","Leonel","","Herrera","Luna","20 Calle 7-62 Zona 7","dantekol@hotmail.com","22381381","1993-11-29");
+call sp_instructores_create("06", "Guillermo","Moises","","Gómez","Monterroso","11 Av 7-38 Zona 1","pato_one@hotmail.com","53313932","1989-12-11");
+call sp_instructores_create("07", "Pedro","Josue","","García","Vanegas","10 Av 3-76 Zona 4","joacocordero@gmail.com","23604503","1998-04-29");
+call sp_instructores_create("08", "Wesly","Isaac","","Mendoza","Perez","11 Calle 0-65 Zona 10","pecmor63@gmail.com","23328081","1981-07-06");
+call sp_instructores_create("09", "Ezequiel","Anderson","","Sosa","Franco","37 Calle A 19-09 Zona 12","aespinz@hotmail.com","24769885","1978-07-21");
+call sp_instructores_create("010", "Francisco","Gabriel","","Aquino","Barrios","7a. Av. 9-63 Zona 9","filipofox@hotmail.com","23315060","1988-10-26");
 
 call sp_instructores_read();
 
@@ -1013,6 +1306,8 @@ call sp_horarios_update("");
 
 call sp_horarios_delete("5");
 
+CALL sp_horarios_report();
+
 DELIMITER $$
 CREATE PROCEDURE total_horarios
 (OUT total INTEGER)
@@ -1027,18 +1322,19 @@ SELECT @total;
 -- -------------------------------------------------------------------------------------------
 
 -- CRUD CURSOS --
-call sp_cursos_create("Ciencias Sociales","2022","34","20","IN5BM","1","01","C-29");
-call sp_cursos_create("Lengua y Literatura","2022","30","23","IN4BV","2","02","D-9");
-call sp_cursos_create("Inglés","2022","50","40","IN6DV","3","03","E-66");
-call sp_cursos_create("Estadistica","2022","25","20","IN6CM","4","04","A-40");
-call sp_cursos_create("Taller","2022","60","54","IN4CV","5","05","B-25");
-call sp_cursos_create("Quimica","2022","20","16","IN5AV","6","06","J-11");
-call sp_cursos_create("Matematicas","2022","55","47","IN5AM","7","07","H-32");
-call sp_cursos_create("Ética","2022","44","39","IN4EM","8","08","K-14");
-call sp_cursos_create("Cálculo","2022","34","29","IN6DM","9","09","S-32");
-call sp_cursos_create("Dibujo","2022","40","27","IN4EV","10","010","M-62");
 
+call sp_cursos_create("Inglés","2022","50","40","DT4CV","1","10","B-23");
+call sp_cursos_create("Estadistica","2022","25","20","DT6EM","2","13","B-25");
+call sp_cursos_create("Taller","2022","25","5","DT6EV","3","15","B-25");
+call sp_cursos_create("Quimica","2022","25","16","EL4AM","4","17","B-31");
+call sp_cursos_create("Matematicas","2022","45","15","EL4CV","5","18","B-99");
+call sp_cursos_create("Ética","2022","44","15","ELE4BM","8","19","C-19");
+call sp_cursos_create("Cálculo","2022","34","29","IN4V","9","20","D-9");
+call sp_cursos_create("Dibujo","2022","40","27","IN4EV","10","22","D-11");
+call sp_cursos_create("Informatica 2022-2023","2022","35","15","IN4EV","1","23","C-29" );
+call sp_cursos_create("Informatica 2022- 2023","2023","35","15","IN4CV","4","9","C-29" );
 	
+call sp_cursos_read();
 
 call sp_cursos_read_by_id("8");
 
@@ -1061,16 +1357,16 @@ SELECT @total;
 
 
 -- CRUD ASIGNACIONES_ALUMNOS --
-call sp_asignaciones_alumnos_create("2021075","1","2022-01-01");
-call sp_asignaciones_alumnos_create("2021080","2","2022-01-01");
-call sp_asignaciones_alumnos_create("2021175","3","2022-01-01");
-call sp_asignaciones_alumnos_create("2021065","4","2022-01-01");
-call sp_asignaciones_alumnos_create("2021024","5","2022-01-01");
-call sp_asignaciones_alumnos_create("2021022","6","2022-01-01");
-call sp_asignaciones_alumnos_create("2021024","17","2022-01-01 06:20:54");
-call sp_asignaciones_alumnos_create("2021150","8","2022-01-01");
-call sp_asignaciones_alumnos_create("2021100","9","2022-01-01");
-call sp_asignaciones_alumnos_create("2021099","10","2022-01-01");
+call sp_asignaciones_alumnos_create("2021099","13","2022-01-01");
+call sp_asignaciones_alumnos_create("2022010","14","2022-02-01");
+call sp_asignaciones_alumnos_create("2022056","15","2022-03-01");
+call sp_asignaciones_alumnos_create("2022123","16","2022-04-01");
+call sp_asignaciones_alumnos_create("2021078","17","2022-05-01");
+call sp_asignaciones_alumnos_create("2021055","18","2022-06-01");
+call sp_asignaciones_alumnos_create("2021042","19","2022-07-01");
+call sp_asignaciones_alumnos_create("2021167","20","2022-08-01");
+call sp_asignaciones_alumnos_create("2021099","21","2022-09-01");
+call sp_asignaciones_alumnos_create("2022123","22","2022-10-01");
 
 call sp_asignaciones_alumnos_read();
 
@@ -1093,3 +1389,10 @@ SELECT @total;
 
 -- -------------------------------------------------------------------------------------------
 
+-- Inserciones Usuario y Rol --
+
+INSERT INTO rol(id, descripcion) VALUES (1, "Administrador");
+INSERT INTO rol(id, descripcion) VALUES (2, "Estandar");
+
+INSERT INTO usuario(user, pass, nombre, rol_id) VALUES("root", "admin", "Usuario Administrador", 1);
+INSERT INTO usuario(user, pass, nombre, rol_id) VALUES ("kinal", "12345", "Usuario Estandar", 2);

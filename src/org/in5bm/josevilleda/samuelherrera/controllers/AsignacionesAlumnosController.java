@@ -38,6 +38,9 @@ import org.in5bm.josevilleda.samuelherrera.system.Principal;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 
 /**
  *
@@ -59,6 +62,8 @@ public class AsignacionesAlumnosController implements Initializable {
     @FXML
     private Button btnEliminar;
     @FXML
+    private TextField txtContador;
+    @FXML
     private ImageView imgEliminar;
     @FXML
     private Button btnReporte;
@@ -74,7 +79,7 @@ public class AsignacionesAlumnosController implements Initializable {
     private TableColumn<AsignacionesAlumnos, Integer> colId;
     @FXML
     private TableColumn<AsignacionesAlumnos, String> colCarne;
-    
+
     @FXML
     private JFXDatePicker dpkFechaAsignacion;
 
@@ -85,7 +90,7 @@ public class AsignacionesAlumnosController implements Initializable {
 
     @FXML
     private ComboBox<Alumnos> cmbAlumno;
-    
+
     @FXML
     private ComboBox<Cursos> cmbCurso;
 
@@ -120,6 +125,8 @@ public class AsignacionesAlumnosController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         cargarDatos();
+
+        ContarRegistros();
     }
 
     private void deshabilitarCampos() {
@@ -259,6 +266,10 @@ public class AsignacionesAlumnosController implements Initializable {
         colFechaAsignacion.setCellValueFactory(new PropertyValueFactory<>("fechaAsignacion"));
         cmbAlumno.setItems(getAlumnos());
         cmbCurso.setItems(getCursos());
+    }
+
+    private void ContarRegistros() {
+        txtContador.setText(String.valueOf(listaObservableAsignaciones.size()));
     }
 
     private boolean existeElementoSeleccionado() {
@@ -473,7 +484,7 @@ public class AsignacionesAlumnosController implements Initializable {
             Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
             stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
             conf.show();
-            
+
         } else {
             asignacion.setAlumnoId(((Alumnos) cmbAlumno.getSelectionModel().getSelectedItem()).getCarne());
             asignacion.setCursoId(((Cursos) cmbCurso.getSelectionModel().getSelectedItem()).getId());
@@ -630,6 +641,7 @@ public class AsignacionesAlumnosController implements Initializable {
                     limpiarCampos();
                     deshabilitarCampos();
                     cargarDatos();
+                    ContarRegistros();
                     tblAsignacionesAlumnos.setDisable(false);
                     btnNuevo.setText("Nuevo");
                     imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
@@ -770,6 +782,7 @@ public class AsignacionesAlumnosController implements Initializable {
                             alertInformation.setHeaderText(null);
                             alertInformation.setContentText("Registro eliminado exitosamente");
                             alertInformation.show();
+                            ContarRegistros();
                         }
                     } else if (result.get().equals(ButtonType.CANCEL)) {
                         alertConfirm.close();
@@ -788,14 +801,29 @@ public class AsignacionesAlumnosController implements Initializable {
     }
 
     @FXML
+    private void clicBorrarSeleccion() {
+        limpiarCampos();
+        deshabilitarCampos();
+        tblAsignacionesAlumnos.getSelectionModel().clearSelection();
+        tblAsignacionesAlumnos.setDisable(false);
+    }
+
+    @FXML
     private void clicReporte(ActionEvent event) {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle("AVISO!!!");
-        alerta.setHeaderText(null);
-        alerta.setContentText("Esta funcionalidad solo está disponible en la versión PRO");
-        Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-        alerta.show();
+
+        AsignacionesAlumnos asignacionesAlumnos = new AsignacionesAlumnos();
+        Map<String, Object> parametros = new HashMap<>();
+
+        if (existeElementoSeleccionado()) {
+            asignacionesAlumnos.setId(Integer.parseInt(txtId.getText()));
+            parametros.put("idAsignacion", asignacionesAlumnos.getId());
+            GenerarReporte.getInstance().mostrarReporte("ReporteAsignacionesAlumnosPorID.jasper", parametros, "Reporte de Asignacion Alumnos por ID");
+        } else {
+            parametros.put("nombre", "Jose Villeda");
+
+            GenerarReporte.getInstance().mostrarReporte("ReporteAsignacionesAlumnos.jasper", parametros, "Reporte de Asignacion Alumnos");
+        }
+
     }
 
 }

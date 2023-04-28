@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Plantilla" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf9998b6-e8a2-4d25-a2ec-50cba42650c5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Control Academico IN5BM G2"/>
+	<parameter name="IMAGE_LOGO" class="java.lang.String"/>
+	<parameter name="IMAGE_FOOTER" class="java.lang.String"/>
+	<parameter name="IMAGE_ALUMNO" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[CALL sp_alumnos_reporte()]]>
+	</queryString>
+	<field name="carne" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="carne"/>
+		<property name="com.jaspersoft.studio.field.label" value="carne"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="alumnos"/>
+	</field>
+	<field name="nombres" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+	</field>
+	<field name="apellidos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="150" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="0" width="280" height="30" uuid="729adad6-7f5f-4ca6-bb85-a802cca2e32d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="16"/>
+				</textElement>
+				<text><![CDATA[Control Academico Monte Carlo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="30" width="280" height="20" uuid="def16e16-6e54-42d4-9911-f200453b8707"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Calzada Rosevelt 13-59, Zona 3 de mixco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="60" width="280" height="20" uuid="9b194fe4-e103-4452-8cbb-e0c1d41c4aea"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Telefono: 5172-9129]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="90" width="280" height="20" uuid="f1bde88e-4069-490c-a9ef-cf272ce86b81"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[NIT : 1112233-4]]></text>
+			</staticText>
+			<textField pattern="MMMM d, yyyy">
+				<reportElement x="477" y="120" width="109" height="20" uuid="54448bf1-1c34-4b56-92da-568cc4af922d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="4" y="0" width="96" height="100" uuid="23ff3440-f46e-4feb-b202-fc1149d6e583"/>
+				<imageExpression><![CDATA[$P{IMAGE_LOGO}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="491" y="-5" width="85" height="85" uuid="a21c8365-97ba-4cf9-9420-250c6a2115b0"/>
+				<imageExpression><![CDATA[$P{IMAGE_ALUMNO}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="83" splitType="Stretch">
+			<staticText>
+				<reportElement x="99" y="10" width="382" height="40" uuid="292514fd-b1f4-4d36-b9dd-3794d5e524e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="24"/>
+				</textElement>
+				<text><![CDATA[REPORTE ALUMNOS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="100" y="50" width="381" height="1" uuid="f3ff3e43-6968-42b7-86e0-ee7923abe253"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="21" width="611" height="1" forecolor="#FFCD05" uuid="2f5a646d-0b5f-4800-874a-a25434f828f1"/>
+				<graphicElement>
+					<pen lineWidth="5.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="24" y="0" width="38" height="19" uuid="0eef50fb-0fc5-4729-9bb9-32cacfa91cba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e3077ca9-8a47-4938-97a2-bcd22b97acf1"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Carne ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="0" width="100" height="20" uuid="cff6a8e7-d612-40c4-ace0-b4d81fc0246c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be6c6057-6d0b-467d-bf10-338ae63ea3d1"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Nombre Completo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="0" width="50" height="18" uuid="ee24e704-2e43-434a-b0d4-5cde78664cec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="625cc732-bd84-484d-b6ec-c4db5cecc50b"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="74" y="-7" width="8" height="38" uuid="dd2e49b6-c4ce-4dd1-b4c2-9a05cb1c4b23"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="31" width="611" height="1" uuid="4e97c97a-61c1-4c91-9867-4f6266d7a329"/>
+			</line>
+			<textField>
+				<reportElement x="14" y="2" width="48" height="20" uuid="1cda4c42-52a0-4389-b6d4-ec9344ff4b18">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e3077ca9-8a47-4938-97a2-bcd22b97acf1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{carne}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="2" width="100" height="20" uuid="4b632c00-9c79-4a32-abc0-c8f83614585f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be6c6057-6d0b-467d-bf10-338ae63ea3d1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="2" width="100" height="20" uuid="f319b717-e5ee-4eae-8726-bad4dd390945">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="625cc732-bd84-484d-b6ec-c4db5cecc50b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="12" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="11" width="611" height="1" forecolor="#FFCD05" uuid="e83f26fc-b70c-418e-897b-fb26840926a2"/>
+				<graphicElement>
+					<pen lineWidth="5.0"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="270" splitType="Stretch">
+			<staticText>
+				<reportElement x="140" y="30" width="280" height="20" uuid="3634e6c9-e856-4822-8c0b-b36dbdbe8261"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[jvilleda-2021075@kinal.edu.gt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="10" width="280" height="20" uuid="a630db03-6386-4621-90f0-3c69f1c9622a"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Jose Mauricio Villeda Morales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="50" width="280" height="20" uuid="68a52c62-a8e9-4229-a7c6-4ee255f2da92"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[IN5BM]]></text>
+			</staticText>
+			<image>
+				<reportElement x="41" y="100" width="490" height="170" uuid="b4d6ed53-51f1-4d63-87db-fdc189e84cf3"/>
+				<imageExpression><![CDATA[$P{IMAGE_FOOTER}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

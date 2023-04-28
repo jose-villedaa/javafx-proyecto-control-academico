@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -25,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.in5bm.josevilleda.samuelherrera.db.Conexion;
 import org.in5bm.josevilleda.samuelherrera.models.CarrerasTecnicas;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 import org.in5bm.josevilleda.samuelherrera.system.Principal;
 
 /**
@@ -59,6 +62,9 @@ public class CarrerasTecnicasController implements Initializable {
 
     @FXML
     private JFXTextField txtSeccion;
+    
+    @FXML
+    private TextField txtContador;
 
     @FXML
     private Button btnNuevo;
@@ -109,6 +115,7 @@ public class CarrerasTecnicasController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarDatos();
+        ContarRegistros();
     }
 
     public void cargarDatos() {
@@ -118,6 +125,10 @@ public class CarrerasTecnicasController implements Initializable {
         colGrado.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String>("grado"));
         colSeccion.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, Character>("seccion"));
         colJornada.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String>("jornada"));
+    }
+    
+    private void ContarRegistros(){
+        txtContador.setText(String.valueOf(listaCarrerasTecnicas.size()));
     }
 
     public boolean existeElementoSeleccionado() {
@@ -440,6 +451,7 @@ public class CarrerasTecnicasController implements Initializable {
                 btnReporte.setVisible(false);
 
                 operacion = Operacion.GUARDAR;
+                
 
                 break;
 
@@ -448,7 +460,7 @@ public class CarrerasTecnicasController implements Initializable {
 
                     cargarDatos();
                     limpiarCampos();
-
+                    ContarRegistros();
                     deshabilitarCampos();
 
                     tblCarrerasTecnicas.getSelectionModel().clearSelection();
@@ -538,6 +550,7 @@ public class CarrerasTecnicasController implements Initializable {
                             stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
 
                             alert.show();
+                            ContarRegistros();
                         }
 
                     } else if (result.get().equals(ButtonType.CANCEL)) {
@@ -666,16 +679,9 @@ public class CarrerasTecnicasController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("AVISO");
-        alert.setContentText("Esta Funcion solo esta disponible en la version PRO");
-        alert.setHeaderText(null);
-
-        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
-
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-
-        alert.show();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("nombre", "Jose Villeda");
+        GenerarReporte.getInstance().mostrarReporte("ReporteCarrerasTecnicas.jasper", parametros, "Reporte de Carreras Tecnicas");
     }
 
     @FXML

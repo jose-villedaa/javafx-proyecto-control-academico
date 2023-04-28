@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -209,6 +210,12 @@
                         <Image url="@../resources/images/flecha-izquierda.png" />
                      </image>
                   </ImageView>
+                  <TextField fx:id="txtContador" disable="true" layoutX="20.0" layoutY="23.0" prefHeight="25.0" prefWidth="41.0" />
+                  <Label layoutX="14.0" layoutY="6.0" text="Registros">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </center>

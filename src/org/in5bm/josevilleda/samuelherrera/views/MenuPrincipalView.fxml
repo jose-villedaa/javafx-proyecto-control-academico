@@ -20,18 +20,33 @@
         <menus>
           <Menu id="menu" mnemonicParsing="false" styleClass="menu" text="Modulos">
             <items>
-              <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicAlumnos" styleClass="menuitem-modulos" text="Alumnos" />
-                  <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicInstructores" styleClass="menuitem-modulos" text="Instructores" />
-                  <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicSalones" styleClass="menuitem-modulos" text="Salones" />
-                  <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicCarrerasTecnicas" styleClass="menuitem-modulos" text="Carreras Tecnicas" />
-                  <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicHorarios" styleClass="menuitem-modulos" text="Horarios" />
+              <MenuItem id="menuitem-modulos" fx:id="miAlumnos" mnemonicParsing="false" onAction="#clicAlumnos" styleClass="menuitem-modulos" text="Alumnos" />
+                  <MenuItem id="menuitem-modulos" fx:id="miInstructores" mnemonicParsing="false" onAction="#clicInstructores" styleClass="menuitem-modulos" text="Instructores" />
+                  <MenuItem id="menuitem-modulos" fx:id="miSalones" mnemonicParsing="false" onAction="#clicSalones" styleClass="menuitem-modulos" text="Salones" />
+                  <MenuItem id="menuitem-modulos" fx:id="miCarrerasTecnicas" mnemonicParsing="false" onAction="#clicCarrerasTecnicas" styleClass="menuitem-modulos" text="Carreras Tecnicas" />
+                  <MenuItem id="menuitem-modulos" fx:id="miHorarios" mnemonicParsing="false" onAction="#clicHorarios" styleClass="menuitem-modulos" text="Horarios" />
                   <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicCursos" styleClass="menuitem-modulos" text="Cursos" />
                   <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicAsignacionAlumnos" styleClass="menuitem-modulos" text="Asignacion Alumnos" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Reportes">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#clicReporteAlumnos" text="Reporte Alumnos" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicReporteInstructores" text="Reporte Instructores" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicReporteSalones" text="Reporte Salones" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicReporteCarreras" text="Reporte Carreras Tecnicas" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicReporteHorarios" text="Reporte Horarios" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicReporteCursos" text="Reporte Cursos" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicCursoId" text="Reporte Cursos por ID" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicReporteAsignacion" text="Reporte Asignacion Alumnos" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicAsignacionesId" text="Reporte Asignaciones por ID" />
+              </items>
+            </Menu>
           <Menu id="menu" mnemonicParsing="false" styleClass="menu" text="?">
             <items>
-              <MenuItem id="menuitem-modulos" mnemonicParsing="false" styleClass="menuitem-modulos" text="Acerca de..." />
+              <MenuItem id="menuitem-modulos" mnemonicParsing="false" onAction="#clicAcercaDe" styleClass="menuitem-modulos" text="Acerca de..." />
+                  <MenuItem mnemonicParsing="false" onAction="#clicLogin" text="Volver a login" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicCerrar" text="Cerrar Aplicacion" />
             </items>
           </Menu>
         </menus>

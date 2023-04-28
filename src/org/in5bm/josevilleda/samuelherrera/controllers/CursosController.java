@@ -38,11 +38,13 @@ import org.in5bm.josevilleda.samuelherrera.models.Salones;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.collections.FXCollections;
-import javafx.geometry.Point2D;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import org.in5bm.josevilleda.samuelherrera.db.Conexion;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 
 /**
  *
@@ -96,6 +98,10 @@ public class CursosController implements Initializable {
 
     @FXML
     private JFXTextField txtId;
+    
+    @FXML
+    private TextField txtContador;
+    
     @FXML
     private JFXTextField txtNombreCurso;
 
@@ -154,6 +160,9 @@ public class CursosController implements Initializable {
         spnCupoMinimo.setValueFactory(valueFactoryCupoMinimo);
 
         cargarDatos();
+        
+        ContarRegistros();
+
 
     }
 
@@ -164,11 +173,11 @@ public class CursosController implements Initializable {
             txtId.setText(String.valueOf(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getId()));
 
             txtNombreCurso.setText(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getNombreCurso());
-            
+
             spnCiclo.getValueFactory().setValue(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCiclo());
-            
+
             spnCupoMaximo.getValueFactory().setValue(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCupoMaximo());
-            
+
             spnCupoMinimo.getValueFactory().setValue(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCupoMinimo());
 
             cmbCarreraTecnica.getSelectionModel().select(buscarCarrerasTecnicas(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCarreraTecnicaId()));
@@ -507,6 +516,10 @@ public class CursosController implements Initializable {
         cmbInstructor.setItems(getInstructores());
         cmbSalon.setItems(getSalones());
     }
+    
+    private void ContarRegistros(){
+        txtContador.setText(String.valueOf(listaObservableCursos.size()));
+    }
 
     private boolean agregarCursos() {
 
@@ -531,7 +544,7 @@ public class CursosController implements Initializable {
             Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
             stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
             conf.show();
-            
+
         } else if (spnCupoMaximo.getValue() == 0) {
             Alert conf = new Alert(Alert.AlertType.WARNING);
             conf.setTitle("Control Academico Monte Carlo");
@@ -540,7 +553,7 @@ public class CursosController implements Initializable {
             Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
             stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
             conf.show();
-            
+
         } else if (spnCupoMinimo.getValue() == 0) {
             Alert conf = new Alert(Alert.AlertType.WARNING);
             conf.setTitle("Control Academico Monte Carlo");
@@ -789,6 +802,7 @@ public class CursosController implements Initializable {
                         limpiarCampos();
                         deshabilitarCampos();
                         cargarDatos();
+                        ContarRegistros();
 
                         tblCursos.setDisable(false);
 
@@ -937,6 +951,8 @@ public class CursosController implements Initializable {
                             alertInformation.setHeaderText(null);
                             alertInformation.setContentText("Registro eliminado exitosamente");
                             alertInformation.show();
+                            ContarRegistros();
+
                         }
                     } else if (result.get().equals(ButtonType.CANCEL)) {
                         alertConfirm.close();
@@ -956,14 +972,21 @@ public class CursosController implements Initializable {
 
     @FXML
     private void clicReporte(ActionEvent event) {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle("AVISO!!!");
-        alerta.setHeaderText(null);
-        alerta.setContentText("Esta funcionalidad solo está disponible en la versión PRO");
-        Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-        alerta.show();
+        Cursos cursos = new Cursos();
+        Map<String, Object> parametros = new HashMap<>();
+
+        if (existeElementoSeleccionado()) {
+            cursos.setId(Integer.parseInt(txtId.getText()));
+            parametros.put("cursoId", cursos.getId());
+            GenerarReporte.getInstance().mostrarReporte("ReporteCursosPorID.jasper", parametros, "Reporte de Cursos por ID");
+        } else {
+            parametros.put("nombre", "Jose Villeda");
+
+            GenerarReporte.getInstance().mostrarReporte("ReporteCursos.jasper", parametros, "Reporte de Cursos");
+        }
+
     }
+   
 
     private Cursos buscarCurso(int id) {
 
@@ -1246,6 +1269,14 @@ public class CursosController implements Initializable {
     @FXML
     private void clicMenuPrincipal(MouseEvent event) {
         escenarioPrincipal.mostrarEscenaPrincipal();
+    }
+    
+     @FXML
+    private void clicBorrarSeleccion() {
+        limpiarCampos();
+        deshabilitarCampos();
+        tblCursos.getSelectionModel().clearSelection();
+        tblCursos.setDisable(false);
     }
 
 }

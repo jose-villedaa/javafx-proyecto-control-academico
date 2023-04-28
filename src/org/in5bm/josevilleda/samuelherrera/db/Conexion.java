@@ -40,7 +40,7 @@ public class Conexion {
         USER = "kinal";
         PASSWORD = "admin";
 
-        URL = "jdbc:mysql://" + IP_SERVER + ":" + PORT + "/" + DB;
+        URL = "jdbc:mysql://" + IP_SERVER + ":" + PORT + "/" + DB + "?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

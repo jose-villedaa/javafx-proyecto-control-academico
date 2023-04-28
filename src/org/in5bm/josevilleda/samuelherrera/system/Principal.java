@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.in5bm.josevilleda.samuelherrera.controllers.AcercaDeController;
 import org.in5bm.josevilleda.samuelherrera.controllers.MenuPrincipalController;
 import org.in5bm.josevilleda.samuelherrera.controllers.AlumnosController;
 import org.in5bm.josevilleda.samuelherrera.controllers.AsignacionesAlumnosController;
@@ -15,6 +16,7 @@ import org.in5bm.josevilleda.samuelherrera.controllers.CursosController;
 import org.in5bm.josevilleda.samuelherrera.controllers.HorariosController;
 import org.in5bm.josevilleda.samuelherrera.controllers.SalonesController;
 import org.in5bm.josevilleda.samuelherrera.controllers.InstructoresController;
+import org.in5bm.josevilleda.samuelherrera.controllers.LoginController;
 
 /**
  *
@@ -42,7 +44,7 @@ public class Principal extends Application{
         this.escenarioPrincipal.getIcons().add(new Image (PAQUETE_IMAGE + "control.png"));
         this.escenarioPrincipal.setResizable(false);
         this.escenarioPrincipal.centerOnScreen();
-        mostrarEscenaPrincipal();
+        mostrarEscenaLogin();
     }
     
     //Escena Menu Principal
@@ -56,6 +58,18 @@ public class Principal extends Application{
             
         }
     }
+    
+    public void mostrarEscenaLogin(){
+        try{
+            LoginController loginController = (LoginController) cambiarEscena("LoginView.fxml", 800, 500); 
+            loginController.setEscenarioPrincipal(this);
+        } catch (Exception e){
+            System.err.println("\nSe produjo un error al intentar mostrar la vista");
+            e.printStackTrace();
+            
+        }
+    }
+    
     // Escena Alumnos
     public void mostrarEscenaAlumnos(){
         try{
@@ -132,6 +146,18 @@ public class Principal extends Application{
         try{
             HorariosController horariosController = (HorariosController) cambiarEscena("HorariosView.fxml", 1200, 700); 
             horariosController.setEscenarioPrincipal(this);
+        } catch (Exception e){
+            System.err.println("\nSe produjo un error al intentar mostrar la vista");
+            e.printStackTrace();
+            
+        }
+    }
+    
+    // Escena Acerca De....
+    public void mostrarEscenaAcercaDe(){
+        try{
+            AcercaDeController acercaDeController = (AcercaDeController) cambiarEscena("AcercaDeView.fxml", 900, 600); 
+            acercaDeController.setEscenarioPrincipal(this);
         } catch (Exception e){
             System.err.println("\nSe produjo un error al intentar mostrar la vista");
             e.printStackTrace();

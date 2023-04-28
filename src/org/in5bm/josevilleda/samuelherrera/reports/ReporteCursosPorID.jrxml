@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteCursos" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d0d5cf88-0c10-422d-b672-bca0972a35f7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Control Academico IN5BM G2"/>
+	<parameter name="IMAGE_LOGO" class="java.lang.String"/>
+	<parameter name="IMAGE_FOOTER" class="java.lang.String"/>
+	<parameter name="IMAGE_CURSOS" class="java.lang.String"/>
+	<parameter name="cursoId" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[CALL sp_cursos_report_by_id($P{cursoId})]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cursos"/>
+	</field>
+	<field name="nombre_curso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_curso"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_curso"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cursos"/>
+	</field>
+	<field name="IF(c.ciclo IS NULL,&quot; &quot;,c.ciclo)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF(c.ciclo IS NULL," ",c.ciclo)]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF(c.ciclo IS NULL," ",c.ciclo)]]>
+		</property>
+	</field>
+	<field name="IF(c.cupo_maximo IS NULL,&quot; &quot;,c.cupo_maximo)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF(c.cupo_maximo IS NULL," ",c.cupo_maximo)]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF(c.cupo_maximo IS NULL," ",c.cupo_maximo)]]>
+		</property>
+	</field>
+	<field name="IF(c.cupo_minimo IS NULL,&quot; &quot;,c.cupo_minimo)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF(c.cupo_minimo IS NULL," ",c.cupo_minimo)]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF(c.cupo_minimo IS NULL," ",c.cupo_minimo)]]>
+		</property>
+	</field>
+	<field name="carrera_tecnica_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="carrera_tecnica_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="carrera_tecnica_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cursos"/>
+	</field>
+	<field name="carrera" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="carrera"/>
+		<property name="com.jaspersoft.studio.field.label" value="carrera"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="carreras_tecnicas"/>
+	</field>
+	<field name="horario_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="horario_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="horario_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cursos"/>
+	</field>
+	<field name="horario_inicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="horario_inicio"/>
+		<property name="com.jaspersoft.studio.field.label" value="horario_inicio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	</field>
+	<field name="horario_final" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="horario_final"/>
+		<property name="com.jaspersoft.studio.field.label" value="horario_final"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	</field>
+	<field name="instructor_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="instructor_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="instructor_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cursos"/>
+	</field>
+	<field name="nombre_instructor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_instructor"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_instructor"/>
+	</field>
+	<field name="salon_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="salon_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="salon_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cursos"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="156" splitType="Stretch">
+			<staticText>
+				<reportElement x="230" y="0" width="280" height="30" uuid="a41188eb-e845-4b6e-967f-ae137e1ce652"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="16"/>
+				</textElement>
+				<text><![CDATA[Control Academico Monte Carlo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="30" width="280" height="20" uuid="6ed8c136-1393-42cd-b0e2-4a7f9b2bdad8"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Calzada Rosevelt 13-59, Zona 3 de mixco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="60" width="280" height="20" uuid="ce0ed91a-1971-414e-8976-00610c331dc8"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Telefono: 5172-9129]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="90" width="280" height="20" uuid="249aabe0-b893-46a0-ba07-62e2cb5e5e42"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[NIT : 1112233-4]]></text>
+			</staticText>
+			<textField pattern="MMMM d, yyyy">
+				<reportElement x="630" y="130" width="109" height="20" uuid="ebc59bde-230e-4141-bed8-d6feed5463c5"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="0" width="96" height="100" uuid="6f232ccc-30dc-4d2d-a23b-9a2c62013011"/>
+				<imageExpression><![CDATA[$P{IMAGE_LOGO}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="640" y="-5" width="85" height="85" uuid="e5d652eb-7b32-4471-b47d-90f7c46d066b"/>
+				<imageExpression><![CDATA[$P{IMAGE_CURSOS}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement x="185" y="20" width="382" height="40" uuid="ca6a18e2-b4e6-46a7-ac7f-15a45bec528a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="24"/>
+				</textElement>
+				<text><![CDATA[REPORTE CURSOS POR ID]]></text>
+			</staticText>
+			<line>
+				<reportElement x="187" y="59" width="381" height="1" uuid="d6b43302-e2a6-436c-846c-cea3aaed94ec"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="20" width="792" height="1" forecolor="#FFCD05" uuid="f7d9fc9a-ecd7-442e-9af5-cbf0e538b260"/>
+				<graphicElement>
+					<pen lineWidth="5.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="-14" y="0" width="16" height="20" uuid="3d93bdb9-6501-40b1-a771-a0890d69c5d6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80702ed5-a08a-430b-9b0b-b07a5ab271cb"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="0" width="83" height="20" uuid="7c254481-8555-4371-b191-8d2f859a7bf0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d90931fc-b275-48c2-99aa-8cb782a4a927"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Nombre Curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="30" height="20" uuid="394e4799-8763-4a27-9ef6-0de7902d6f7b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="09c6c61f-b2c3-4d9a-b6f9-d8b744e69db4"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Ciclo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="60" height="20" uuid="a294c601-a3bf-4c59-abe1-b4e4f823ce05">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9be17123-c6c1-4c6e-ad0f-c72357ce739a"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Cupo Max.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="60" height="20" uuid="3ad654b1-d8a2-42d9-a7e2-74564ea87c21">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2a15ab1a-fa72-4c43-a703-6f00179e66f9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Cupo Min.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="93" height="20" uuid="e1ff6582-0511-4f69-b144-d39251b7adb2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f3c86ac-5286-432a-bd63-9a10bafe9e41"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Codigo Tecnico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="80" height="20" uuid="a8bae928-6678-4028-8d3c-dd50cf0a1221">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4509586b-27d7-47a5-abcf-861526ac24cb"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Horario Inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="0" width="75" height="20" uuid="f8a7ac9c-bc13-485b-aa02-d4d2a2a96830">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa89c360-7aa7-4733-99fa-b71399f26325"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Horario Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="650" y="0" width="61" height="21" uuid="ce49c755-6769-452b-a7b1-acc7c184629c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8d6e8eb7-0eb3-4e30-9c49-a95a87ca1bfb"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Instructor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="730" y="0" width="35" height="20" uuid="5224b677-edf3-4a5e-b3d2-25bdb52d65f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1f6f4c8c-d7f3-4d07-900d-e461fbf4d69a"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Salon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="43" height="20" uuid="e2f45d97-6e11-47fb-b066-e398d5132bb0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f3c86ac-5286-432a-bd63-9a10bafe9e41"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial Black"/>
+				</textElement>
+				<text><![CDATA[Carrera]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="20" width="791" height="1" uuid="047193d8-917a-4a47-a5ab-696bf1693e0a"/>
+			</line>
+			<staticText>
+				<reportElement x="5" y="-8" width="8" height="23" uuid="d1f05f1c-76a2-42a3-83a7-b970657f4414"/>
+				<textElement>
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-14" y="-2" width="20" height="18" uuid="66c76479-e799-42ff-aea8-2660b1ff510c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a04730ea-8b1c-4fd4-8af5-009ce955aadd"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="14" y="-3" width="89" height="16" uuid="1d4773c1-2e54-4c6c-98e5-27c613e03e54">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ffba5f04-34c3-499a-8918-2dcf22017112"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_curso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="111" y="-3" width="28" height="16" uuid="5ec5e04b-e531-4eb4-a012-83bb88e4f352">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="823d3307-5193-45fc-9181-d9950cccfc29"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{IF(c.ciclo IS NULL," ",c.ciclo)}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="168" y="-2" width="25" height="15" uuid="e35b60ab-9da0-423f-9b16-d30c8ff2a237">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="349c4150-6461-4108-908b-46f679d6c73e"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{IF(c.cupo_maximo IS NULL," ",c.cupo_maximo)}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="237" y="-2" width="26" height="15" uuid="ca99dc7d-105e-4b4a-bc73-cf0cba604327">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bad5c0f3-513c-4456-927e-10d8db2fd570"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{IF(c.cupo_minimo IS NULL," ",c.cupo_minimo)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="-2" width="54" height="16" uuid="5e945c69-f230-48f5-898b-6e53837214d2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="611dba7f-0936-42cd-ae5b-e113d4ca156b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{carrera_tecnica_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="-2" width="80" height="18" uuid="447ad70a-122e-482e-9946-d0f7a6cd5ba9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a12f3fb-557a-4686-99cb-0005d42b31ae"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{carrera}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="-2" width="45" height="15" uuid="7380aa4a-3f42-474a-937d-a4c027970444">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a7f4e38-8786-4d08-bf56-2093351f77d0"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{horario_inicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="577" y="-2" width="40" height="13" uuid="fddd1f9e-0b3d-4551-b306-01d51410bae3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b337fcd7-2e4c-4561-817d-dbebfd1ffb54"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{horario_final}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="646" y="-2" width="75" height="15" uuid="27a00ceb-97a8-41c2-9222-fe6bd6f06461">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d03915b-0192-4d6c-b06a-0dc147107371"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre_instructor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="734" y="-1" width="27" height="14" uuid="a7ddf4a3-e958-4b5d-82f2-c7d0e0006375">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b99e6005-d0f4-4435-8198-cba650f437bb"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{salon_id}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="110" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="10" width="791" height="1" forecolor="#FFCD05" uuid="4f0e55b2-cfb8-41de-8b67-50b02c24c1ee"/>
+				<graphicElement>
+					<pen lineWidth="5.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="236" y="50" width="280" height="20" uuid="ed6c5b9b-d428-4c4b-9621-aa45ceecee06"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[jvilleda-2021075@kinal.edu.gt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="30" width="280" height="20" uuid="4c9cdff7-4b3b-4a47-b72f-2dfe37693c3c"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Jose Mauricio Villeda Morales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="70" width="280" height="20" uuid="d8d3e8ef-b37b-49e2-9abd-11c1c3c8fa93"/>
+				<textElement textAlignment="Center">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[IN5BM]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -17,6 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.in5bm.josevilleda.samuelherrera.models.Alumnos;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 
 /**
  *
@@ -62,6 +65,9 @@ public class AlumnosController implements Initializable {
 
     @FXML
     private JFXTextField txtApellido2;
+
+    @FXML
+    private TextField txtContador;
 
     @FXML
     private Button btnNuevo;
@@ -115,6 +121,7 @@ public class AlumnosController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarDatos();
+        ContarRegistros();
     }
 
     public void cargarDatos() {
@@ -130,6 +137,10 @@ public class AlumnosController implements Initializable {
     public boolean existeElementoSeleccionado() {
         return (tblAlumnos.getSelectionModel().getSelectedItem() != null);
 
+    }
+
+    private void ContarRegistros() {
+        txtContador.setText(String.valueOf(listaAlumnos.size()));
     }
 
     @FXML
@@ -228,6 +239,17 @@ public class AlumnosController implements Initializable {
         return false;
     }
 
+    private boolean evaluacionPK () {
+        boolean opcion = true;
+        for (int i = 0; i < listaAlumnos.size(); i++) {
+            if (txtCarne.getText().equals(listaAlumnos.get(i).getCarne())) {
+                opcion = false;
+                break;
+            }
+        }
+        return opcion;
+    }
+
     //Agregar Alumno
     private boolean agregarAlumno() {
         Alumnos alumno = new Alumnos();
@@ -261,7 +283,7 @@ public class AlumnosController implements Initializable {
             Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
             stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
             conf.show();
-
+ 
         } else {
             alumno.setCarne(txtCarne.getText());
             alumno.setNombre1(txtNombre1.getText());
@@ -318,6 +340,7 @@ public class AlumnosController implements Initializable {
 
         try {
             pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_alumnos_read()}");
+            
 
             System.out.println(pstmt.toString());
 
@@ -452,6 +475,7 @@ public class AlumnosController implements Initializable {
                     cargarDatos();
                     limpiarCampos();
                     deshabilitarCampos();
+                    ContarRegistros();
 
                     tblAlumnos.getSelectionModel().clearSelection();
 
@@ -539,6 +563,7 @@ public class AlumnosController implements Initializable {
                             stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
 
                             alert.show();
+                            ContarRegistros();
                         }
 
                     } else if (result.get().equals(ButtonType.CANCEL)) {
@@ -666,16 +691,9 @@ public class AlumnosController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("AVISO");
-        alert.setContentText("Esta Funcion solo esta disponible en la version PRO");
-        alert.setHeaderText(null);
-
-        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
-
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-
-        alert.show();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("nombre", "Jose Villeda");
+        GenerarReporte.getInstance().mostrarReporte("ReporteAlumnos.jasper", parametros, "Reporte de Alumnos");
     }
 
     @FXML

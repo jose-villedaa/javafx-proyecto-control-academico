@@ -11,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.in5bm.josevilleda.samuelherrera.system.Principal;
 import org.in5bm.josevilleda.samuelherrera.db.Conexion;
@@ -20,16 +19,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.in5bm.josevilleda.samuelherrera.models.Instructores;
+import org.in5bm.josevilleda.samuelherrera.reports.GenerarReporte;
 
 /**
  *
@@ -108,6 +111,9 @@ public class InstructoresController implements Initializable {
 
     @FXML
     private TableColumn colFecha;
+    
+    @FXML
+    private TextField txtContador;
 
     @FXML
     private JFXTextField txtId;
@@ -143,6 +149,11 @@ public class InstructoresController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarDatos();
+        ContarRegistros();
+    }
+    
+    private void ContarRegistros(){
+        txtContador.setText(String.valueOf(listaInstructores.size()));
     }
 
     public void cargarDatos() {
@@ -316,7 +327,7 @@ public class InstructoresController implements Initializable {
 
             Alert conf = new Alert(Alert.AlertType.WARNING);
             conf.setTitle("Control Academico Monte Carlo");
-            conf.setContentText(" Ingrese el Email del Instructor ");
+            conf.setContentText(" Ingrese el telefono del Instructor ");
             conf.setHeaderText(null);
             Stage stageAlertConf = (Stage) conf.getDialogPane().getScene().getWindow();
             stageAlertConf.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
@@ -336,8 +347,7 @@ public class InstructoresController implements Initializable {
             PreparedStatement pstmt = null;
 
             try {
-                pstmt = Conexion.getInstance().getConexion()
-                        .prepareCall("{CALL sp_instructores_create(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+                pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_instructores_create(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
 
                 pstmt.setString(1, instructor.getNombre1());
                 pstmt.setString(2, instructor.getNombre2());
@@ -535,6 +545,7 @@ public class InstructoresController implements Initializable {
                     cargarDatos();
                     limpiarCampos();
                     deshabilitarCampos();
+                    ContarRegistros();
 
                     tblInstructores.getSelectionModel().clearSelection();
 
@@ -624,6 +635,7 @@ public class InstructoresController implements Initializable {
                             stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
 
                             alert.show();
+                            ContarRegistros();
                         }
 
                     } else if (result.get().equals(ButtonType.CANCEL)) {
@@ -751,16 +763,9 @@ public class InstructoresController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("AVISO");
-        alert.setContentText("Esta Funcion solo esta disponible en la version PRO");
-        alert.setHeaderText(null);
-
-        Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
-
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "control.png"));
-
-        alert.show();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("nombre", "Jose Villeda");
+        GenerarReporte.getInstance().mostrarReporte("ReporteInstructores.jasper", parametros, "Reporte de Instructores");
     }
 
     @FXML
